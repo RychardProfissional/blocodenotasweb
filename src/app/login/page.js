@@ -2,9 +2,10 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { setCookie} from 'nookies'
+import { setCookie } from 'nookies'
+import style  from './page.module.css'
 
-export default function Home() {
+export default function Login() {
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(false)
@@ -20,30 +21,37 @@ export default function Home() {
       }
     }
 
-    const checkUser = await fetch(`/api/v1/checkUser?name=${name}&password=${password}`, queryApi)
-    const check = await checkUser.json() 
-    console.log(check.check)
+    // const checkUser = await fetch(`/api/v1/checkUser?name=${name}&password=${password}`, queryApi)
+    // const check = await checkUser.json() 
 
-    setPassword('')
-    setName('') 
+    // if (check.check){
+    //   router.push('/home')
+    // }
+    // else setError(true)
+
+    // setPassword('')
+    // setName('') 
   }
   
   return (
-    <main>
-      <form onSubmit={(e) => checkLogin(e)} className={error? 'error': ''}>
-        <label htmlFor='name'>
-          <span>Nome: </span>
-          <input id='name' type='text' value={name} onInput={(e) => setName(e.target.value)} placeholder='nome de usuário'/>
-        </label>
-        <label htmlFor='password'>
-          <span>Senha: </span>
-          <input id='password' type='text' value={password} placeholder='********' onInput={(e) => setPassword(e.target.value)}/>
-        </label>
-        <input type='submit' value='Entrar' />
-      </form>
-      <footer>
-        <a href='#'>Recuperar senha</a> | <a href='#'>Cadastrar-se</a>
-      </footer>
+    <main className={style.main}>
+      <div className={style.content}>
+        <form onSubmit={(e) => checkLogin(e)} className={style.form}>
+          <h1>Login</h1>
+          <label htmlFor='name' className={style.input_content}>
+            <span>Nome: </span>
+            <input id='name' type='text' value={name} onInput={(e) => setName(e.target.value)} placeholder='nome de usuário'/>
+          </label>
+          <label htmlFor='password' className={style.input_content}>
+            <span>Senha: </span>
+            <input id='password' type='password' value={password} placeholder='••••••••' onInput={(e) => setPassword(e.target.value)}/>
+          </label>
+          <input type='submit' value='Entrar' className={style.input_content} />
+        </form>
+        <footer className={style.footer}>
+          <a href='#'>Recuperar senha</a> | <a href='#'>Cadastrar-se</a>
+        </footer>
+      </div>
     </main>
   )
 }

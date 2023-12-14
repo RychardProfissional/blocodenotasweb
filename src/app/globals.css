@@ -1,0 +1,28 @@
+*{
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+}
+
+html,
+body{
+    min-width: 100vw;
+    min-height: 100vh;
+}
+
+input, textarea{
+    border: 0px;
+    outline: none;
+    background: unset;
+}
+
+a{
+    padding: 2px;
+    font-size: 15px;
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: underline;
+}
