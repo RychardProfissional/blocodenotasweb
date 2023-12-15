@@ -8,10 +8,11 @@ datasource db {
 }
 
 model User {
-  id Int @id
-  nome String
-  email String @unique
+  id       Int @id
+  name     String @unique
   password String
+  email    String @unique
+  active   Boolean
 
   @@map("users")
 }

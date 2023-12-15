@@ -1,15 +1,17 @@
 'use server'
 import { NextResponse } from "next/server"
+import { PrismaClient } from "@prisma/client"
 
-export async function GET(req){
-  const {searchParams} = new URL(req.url)
+export async function POST(request){
+  const {name, password} = await request.json()
+  const prisma = new PrismaClient()
 
-  const loginParams = {
-    name: searchParams.get('name'),
-    password: searchParams.get('password')
-  }
+  const User = await prisma.user.findUnique({
+    where: {
+      nome: name,
+      password: password,
+    },
+  })
 
-  if (!loginParams.name || !loginParams.password) return NextResponse.json({check: false})
-
-  return NextResponse.json({check: true})
+  return NextResponse.json({check: !!User || false})
 }

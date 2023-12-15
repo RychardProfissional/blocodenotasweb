@@ -14,6 +14,7 @@ export default function Login() {
 
   async function checkLogin(e){
     e.preventDefault()
+    
     const queryApi = {
       method: 'GET',
       headers: {
@@ -21,16 +22,30 @@ export default function Login() {
       }
     }
 
-    // const checkUser = await fetch(`/api/v1/checkUser?name=${name}&password=${password}`, queryApi)
-    // const check = await checkUser.json() 
+    if (password && name)
+    {
+      fetch(`/api/v1/checkUser?name=${name}&password=${password}`, queryApi)
+      .then(response => {
+        response = response.json()
 
-    // if (check.check){
-    //   router.push('/home')
-    // }
-    // else setError(true)
+        if (response.check) {
+          const cookieOptions = {maxAge: 28800, path: '/home'};
 
-    // setPassword('')
-    // setName('') 
+          setCookie(null, "INPUT_NAME", name, cookieOptions)
+          setCookie(null, "INPUT_PASSWORD", password, cookieOptions)
+
+          router.push('/home')
+        }
+        else setError(true)
+      })
+      .catch(e => {
+        console.log(e)
+        setError(true)
+      })
+    }
+      
+    setPassword('')
+    setName('')
   }
   
   return (
