@@ -1,5 +1,5 @@
-test('usuario deve existir', async function (){
-    const response = await fetch('http://localhost:3000/api/v1/checkUser', {
+test('api/v1/user/check - usuario deve existir', async function (){
+    const res = await fetch( `http://localhost:3000/api/user/check`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
@@ -9,12 +9,12 @@ test('usuario deve existir', async function (){
             password: 'testpassword',
         })
     })
-    const result = await response.json()
-    expect(result.check).toBe(true);
+    const result = await res.json()
+    expect(result.ok).toBe(true)
 })
 
-test('usuario não deve existir', async function (){
-    const response = await fetch('http://localhost:3000/api/v1/checkUser', {
+test('api/v1/user/check - usuario não deve existir', async function (){
+    const res = await fetch(`http://localhost:3000/api/user/check`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
@@ -24,6 +24,6 @@ test('usuario não deve existir', async function (){
             password: 'notExitpassword',
         })
     })
-    const result = await response.json()
-    expect(result.check).toBe(false);
+    const result = await res.json()
+    expect(result.ok).toBe(false);
 })

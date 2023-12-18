@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { setCookie } from 'nookies'
-import style  from './page.module.css'
-import Input from '../../components/input'
+import style  from './login.module.css'
+import Input from '@/app/components/input'
 
 export default function Login() {
   const [name, setName] = useState('')
@@ -29,7 +29,7 @@ export default function Login() {
       .then(response => {
         response = response.json()
 
-        if (response.check) {
+        if (response.ok) {
           const cookieOptions = {maxAge: 28800, path: '/home'};
 
           setCookie(null, "INPUT_NAME", name, cookieOptions)

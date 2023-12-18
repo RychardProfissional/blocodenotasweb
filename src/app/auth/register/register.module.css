@@ -1,0 +1,17 @@
+.form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 510px;
+}
+
+.form h1{
+    font-size: 3.5em;
+    margin-bottom: 40px;
+}
+
+.footer{
+   margin-top: 20px;
+}
+
