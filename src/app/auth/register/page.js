@@ -42,12 +42,12 @@ export default function Register(){
         const pc = {
             lengthMin: p.length > 8,
             specialChar: /[^a-zA-Z0-9]/.test(p),
-            lowercase: /a-z/.test(p),
-            uppercase: /A-Z/.test(p)
+            lowercase: /[a-z]/.test(p),
+            uppercase: /[A-Z]/.test(p)
         }
 
         setPasswordChecked(!Object.values(pc).every(v => v) || !p.length)
-        setPasswordChecks(p)
+        setPasswordChecks(pc)
         setPassword(p)
     }
 
@@ -63,9 +63,12 @@ export default function Register(){
                 <Input onInput={e => handleName(e.target.value)} error={nameChecked}>Nome: </Input>
                 <Input onInput={e => handleEmail(e.target.value)} error={emailCheked}>Email: </Input>
                 <Input onInput={e => handlePassword(e.target.value)} error={passwordChecked} type="password">Senha: </Input>
-                <div>
-                    {/*aqui deve ficar a lista de verificações de senha*/}
-                </div>
+                <ul> {/* Agora é css puro */}
+                    <li> <div>simbolo-</div><span>A senha tem que ter pelo menos 8 caracteres</span></li>
+                    <li> <div>simbolo-</div><span>A senha deve conter pelo menos 1 caracter especial</span></li>
+                    <li> <div>simbolo-</div><span>A senha deve conter pelo menos 1 letra minuscula</span></li>
+                    <li> <div>simbolo-</div><span>A senha deve conter pelo menos 1 letra maiuscula</span></li>
+                </ul>
                 <Input onInput={e => handlePasswordTwo(e.target.value)} error={passwordTwoChecked} type="password">Senha novamente: </Input>
                 <SubmitInput value='cadastrar-se'/>
             </form>

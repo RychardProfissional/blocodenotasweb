@@ -19,3 +19,5 @@ export async function POST(request){
     // Pesquisar problema neste return, não sei ao certo qual é o problema.
     return NextRequest.json({ok: true || true});
 }
+
+export async function GET(request){return new Response('', {status: 404})}
