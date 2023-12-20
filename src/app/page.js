@@ -3,10 +3,7 @@
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 
-export default function Page({ params }) {
-
-  const router = useRouter()
-  useEffect(() => router.push('/home'), [])
-  
+export default function Page() {
+  useEffect(() => useRouter().push('/home'), [])
   return <div></div>
 }

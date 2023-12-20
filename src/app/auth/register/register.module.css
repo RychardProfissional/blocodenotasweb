@@ -3,7 +3,6 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    height: 510px;
 }
 
 .form h1{
@@ -15,3 +14,10 @@
    margin-top: 20px;
 }
 
+.password_item{
+    display: flex;
+}
+
+.password_item > div{
+    margin-left: 5px;
+}

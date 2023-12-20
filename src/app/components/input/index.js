@@ -1,17 +1,47 @@
+import React from 'react'
 import style from './input.module.css'
 
-export function Input({children, error=false, className='', ...props})
+export function Input({children, error=false, value = '', className='', type='text', ...props})
 {
-  return (
-    <div className={`${error??'error'} ${className} ${style.input_content}`}>
-      <span>{children}</span>
-      <input type="text" {...props}/>
-    </div>
-  )
-}
+  let t, input = <div className=''></div>
+  if (type.indexOf(' ') !== -1) [type, t] = type.split(' ')
 
-export function SubmitInput(props){
-  return <input className={style.submit_input} type='submit' {...props}/>
+  switch(type){
+    case 'submit':
+      props = {...props, type: type, value: value}
+
+      input = (
+        <input className={`${style.submit_input} ${className}`} type='submit' {...props}/>
+      )
+    break
+    case 'text':
+    case 'password':
+      input = (
+        <div className={`${style.input_content} ${className}${error?' error': ''}`}>
+          <span>{value}</span>
+          <input type={type} {...props}/>
+        </div>
+      )
+    break
+    default: 
+      input = (<input className='text'></input>)
+  }
+
+  if(t === 'dropDown') {
+    let c = children;
+
+    input = React.cloneElement(
+      input, {className: `${input.props.className} ${style.drop_down}`}, 
+      <>
+        {input.props.children} 
+        <ul className={style.drop_down_content_itens}>
+          {c?.map((e) => <li key={c.indexOf(e)} className={style.drop_down_iten}>{e}</li>)}  
+        </ul>
+      </>
+    )
+  }
+
+  return input
 }
 
 export default Input

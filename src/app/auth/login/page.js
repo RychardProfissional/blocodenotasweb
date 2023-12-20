@@ -53,9 +53,9 @@ export default function Login() {
     <>
       <form onSubmit={(e) => checkLogin(e)} className={style.form}>
         <h1>Login</h1>
-        <Input placeholder='nome aleatorio' onInput={(e) => setName(e.target.value)}>Nome: </Input>
-        <Input placeholder='••••••••' onInput={(e) => setPassword(e.target.value)}>Senha: </Input>
-        <input type='submit' value='Entrar' />
+        <Input onInput={(e) => setName(e.target.value)} value='Nome:' />
+        <Input onInput={(e) => setPassword(e.target.value)} value='Senha:' />
+        <Input type='submit' value='Entrar' />
       </form>
       <footer className={style.footer}>
         <a href='#'>Recuperar senha</a> | <a href='/auth/register'>Cadastrar-se</a>

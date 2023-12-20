@@ -1,7 +1,8 @@
 'use client'
 
-import {SubmitInput, Input} from "@/app/components/input"
+import Input from "@/app/components/input"
 import style from "./register.module.css"
+import { BsCheckCircleFill, BsCircleFill } from "react-icons/bs";
 import { useState } from "react"
 
 export default function Register(){
@@ -18,10 +19,10 @@ export default function Register(){
     const [passwordTwoChecked, setPasswordTwoChecked] = useState(false)
 
     const [passwordChecks, setPasswordChecks] = useState({
-        lengthMin: true,
-        specialChar: true,
-        lowercase: true,
-        uppercase: true,
+        lengthMin: false,
+        specialChar: false,
+        lowercase: false,
+        uppercase: false,
     })
 
     function registerUser(e) {
@@ -60,17 +61,28 @@ export default function Register(){
         <>
             <form onSubmit={e => registerUser(e)} className={style.form}>
                 <h1>Cadastro</h1>
-                <Input onInput={e => handleName(e.target.value)} error={nameChecked}>Nome: </Input>
-                <Input onInput={e => handleEmail(e.target.value)} error={emailCheked}>Email: </Input>
-                <Input onInput={e => handlePassword(e.target.value)} error={passwordChecked} type="password">Senha: </Input>
-                <ul> {/* Agora é css puro */}
-                    <li> <div>simbolo-</div><span>A senha tem que ter pelo menos 8 caracteres</span></li>
-                    <li> <div>simbolo-</div><span>A senha deve conter pelo menos 1 caracter especial</span></li>
-                    <li> <div>simbolo-</div><span>A senha deve conter pelo menos 1 letra minuscula</span></li>
-                    <li> <div>simbolo-</div><span>A senha deve conter pelo menos 1 letra maiuscula</span></li>
-                </ul>
-                <Input onInput={e => handlePasswordTwo(e.target.value)} error={passwordTwoChecked} type="password">Senha novamente: </Input>
-                <SubmitInput value='cadastrar-se'/>
+                <Input onInput={e => handleName(e.target.value)} error={nameChecked} value="Nome:"/>
+                <Input onInput={e => handleEmail(e.target.value)} error={emailCheked} value="Email:" />
+                <Input onInput={e => handlePassword(e.target.value)} error={passwordChecked} type="password dropDown" value="Senha:">
+                    <div className={style.password_item}>
+                        {passwordChecks.lengthMin? <BsCheckCircleFill fill='green'/>:<BsCircleFill fill='red'/>}
+                        <div>A senha tem que ter pelo menos 8 caracteres</div>
+                    </div>
+                    <div className={style.password_item}>
+                        {passwordChecks.specialChar? <BsCheckCircleFill fill='green'/>:<BsCircleFill fill='red'/>}
+                        <div>A senha deve conter pelo menos 1 caracter especial</div>
+                    </div>
+                    <div className={style.password_item}>
+                        {passwordChecks.uppercase? <BsCheckCircleFill fill='green'/>:<BsCircleFill fill='red'/>}
+                        <div>A senha deve conter pelo menos 1 letra minuscula</div>
+                    </div>
+                    <div className={style.password_item}>
+                        {passwordChecks.lowercase? <BsCheckCircleFill fill='green'/>:<BsCircleFill fill='red'/>}
+                        <div>A senha deve conter pelo menos 1 letra maiuscula</div>
+                    </div>
+                </Input>
+                <Input onInput={e => handlePasswordTwo(e.target.value)} error={passwordTwoChecked} type="password" value="Senha novamente:" />
+                <Input type='submit'value='cadastrar-se'/>
             </form>
             <footer className={style.footer}>
                 <a href="#">Logar</a> <span>|</span> <a href="#">Recuperar conta</a>

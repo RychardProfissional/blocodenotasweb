@@ -13,8 +13,11 @@
     min-width: 400px;
     height: 57px;
 
+    margin: 10px 0;
+
     font-weight: bold;
     font-size: 0.8em;
+    z-index: 1;
 }
 
 .input_content:hover{
@@ -71,4 +74,27 @@
 
 .submit_input:focus{
     background-color: #e6da00;
+}
+
+/*
+    DropDown
+*/
+
+.drop_down{
+    z-index: 5;
+}
+
+.drop_down:focus-within .drop_down_content_itens{
+    display: block!important;
+}
+
+.drop_down_content_itens{
+    display: none;
+    background-color: #fafafa;
+    border-radius: 3px;
+    padding: 7px;
+}
+
+.drop_down_iten{
+    padding: 5px 7px; 
 }
