@@ -1,14 +1,14 @@
 import React from 'react'
 import style from './input.module.css'
 
-export function Input({children, error=false, value = '', className='', type='text', ...props})
+export function Input({children, error=false, label = '', className='', type='text', ...props})
 {
   let t, input = <div className=''></div>
   if (type.indexOf(' ') !== -1) [type, t] = type.split(' ')
 
   switch(type){
     case 'submit':
-      props = {...props, type: type, value: value}
+      props = {...props, type: type}
 
       input = (
         <input className={`${style.submit_input} ${className}`} type='submit' {...props}/>
@@ -17,9 +17,9 @@ export function Input({children, error=false, value = '', className='', type='te
     case 'text':
     case 'password':
       input = (
-        <div className={`${style.input_content} ${className}${error?' error': ''}`}>
-          <span>{value}</span>
-          <input type={type} {...props}/>
+        <div className={`${style.content} ${className}${error? style.error: ''}`}>
+          <input type={type} {...props} required/>
+          <span>{label}</span>
         </div>
       )
     break

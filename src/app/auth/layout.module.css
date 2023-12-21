@@ -2,12 +2,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh   ;
+    min-height: 100vh;
     min-width: 100vw;
 }
 
 .content{
-    background-color: bisque;
+    background-color: #fcd09b;
     border-radius: 7px;
     padding: 50px 40px;
     min-width: 600px;

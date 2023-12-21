@@ -11,8 +11,6 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState(false)
 
-  const router = useRouter()
-
   function checkLogin(e){
     e.preventDefault()
 
@@ -20,22 +18,26 @@ export default function Login() {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({
+        name: name,
+        password: password, 
+      })
     }
 
     if (password && name)
     {
-      fetch(`/api/v1/checkUser?name=${name}&password=${password}`, queryApi)
+      fetch(`${process.env.URL_ROUTE_BASE}`, queryApi)
       .then(response => {
         response = response.json()
 
         if (response.ok) {
-          const cookieOptions = {maxAge: 28800, path: '/home'};
+          const cookieOptions = {maxAge: 28800, path: '/'};
 
           setCookie(null, "INPUT_NAME", name, cookieOptions)
           setCookie(null, "INPUT_PASSWORD", password, cookieOptions)
 
-          router.push('/home')
+          useRouter().push('/user')
         }
         else setError(true)
       })
