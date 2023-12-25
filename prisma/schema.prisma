@@ -8,11 +8,15 @@ datasource db {
 }
 
 model User {
-  id       Int @id @default(autoincrement())
-  name     String @unique
-  password String
-  email    String @unique
-  active   Boolean @default(true)
+  id        Int @id @default(autoincrement())
+  createdAT DateTime @default(now())
+  updatedAT DateTime @updatedAt
+
+  name      String @unique
+  password  String
+  email     String @unique
+  
+  active    Boolean @default(true)
 
   @@map("users")
 }
