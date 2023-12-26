@@ -133,7 +133,7 @@ export default function Register(){
                 <Input type='submit'value='cadastrar-se'/>
             </form>
             <footer className={style.footer}>
-                <a href="#">Logar</a> <span>|</span> <a href="#">Recuperar conta</a>
+                <a href="/auth/login">Logar</a> <span>|</span> <a href="#">Recuperar conta</a>
             </footer>
         </>
     )

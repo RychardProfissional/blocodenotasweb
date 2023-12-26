@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import { setCookie } from 'nookies'
 import style  from './login.module.css'
 import Input from '@/app/components/input'
@@ -15,7 +15,7 @@ export default function Login() {
     e.preventDefault()
 
     const queryApi = {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -28,8 +28,8 @@ export default function Login() {
     if (password && name)
     {
       fetch(`${process.env.URL_ROUTE_BASE}`, queryApi)
-      .then(response => {
-        response = response.json()
+      .then(async function (response) {
+        response = await response.json()
 
         if (response.ok) {
           const cookieOptions = {maxAge: 28800, path: '/'};
@@ -37,7 +37,7 @@ export default function Login() {
           setCookie(null, "INPUT_NAME", name, cookieOptions)
           setCookie(null, "INPUT_PASSWORD", password, cookieOptions)
 
-          useRouter().push('/user')
+          redirect('/user')
         }
         else setError(true)
       })
@@ -55,8 +55,8 @@ export default function Login() {
     <>
       <form onSubmit={(e) => checkLogin(e)} className={style.form}>
         <h1>Login</h1>
-        <Input onInput={(e) => setName(e.target.value)} value='Nome:' />
-        <Input onInput={(e) => setPassword(e.target.value)} value='Senha:' />
+        <Input onInput={(e) => setName(e.target.value)} label='Nome:' />
+        <Input onInput={(e) => setPassword(e.target.value)} label='Senha:' />
         <Input type='submit' value='Entrar' />
       </form>
       <footer className={style.footer}>
