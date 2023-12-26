@@ -11,8 +11,6 @@ export async function POST(request){
         password: password,
         email: email
     })
-    
-    console.log(user);
 
     return NextResponse.json({ok: !!user || false});
 }

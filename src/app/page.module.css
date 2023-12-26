@@ -10,7 +10,7 @@
     background-image: radial-gradient(farthest-corner at 30% 40%, #021849, #000b24 50%);
 }
 
-.header, .footer{
+.header{
     display: flex;
     height: 25vh;
     width: 100%;
@@ -59,23 +59,22 @@
     border-color: #ffffff17;
 }
 
-.title  {
-    color: #c2c1c1;
-    font-size: 2.5em;
-    font-weight: bolder;
+.title{
     font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    text-align: center;
+    font-size: 2.5em;
+    color: #c2c1c1;
 }
 
-.footer{
-    flex-direction: column;
-    justify-content: center;
+@media screen and (max-width: 905px){
+    .nav_item{font-size: 90%}
+    .nav_item:hover{font-size: 91.5%}
 }
 
-.social_media{
-    display: flex;
-    background-color: gray;
-}
-
-.media_icon{
-    
+@media screen and (max-width: 830px){
+    .title{width: 400px}
+    .nav{width: 100%}
+    .nav_item{font-size: 80%}
+    .nav_item:hover{font-size: 81.5%}
 }
