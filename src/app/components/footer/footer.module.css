@@ -7,20 +7,18 @@
     width: 100%;
     
     justify-content: center;
-    background-color: #00001dc2;
+    background-color: rgb(var(--color-strong-1));
 }
 
 .text{
-    font-size: 1.2em;
-}
-
-.text, .licence span{
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    color: #949494;
+    font: 1.2em var(--font-2);
+    color: rgb(var(--color-white-4));
 }
 
 .licence span{
-    font-size: 0.9;
+    font: 0.95em var(--font-2);
+    color: rgb(var(--color-white-4));
+    
     margin-left: 3px;
     vertical-align: center;
 }
@@ -29,7 +27,7 @@
     display: flex;
     justify-content: space-between;
     margin: 20px 0;
-    width: 30%;
+    width: 20%;
 }
 
 .social_media div{
@@ -44,7 +42,7 @@
     height: 37px;
     width: 37px;
     transition: .5s;
-    color: rgb(72, 0, 24);
+    color: rgb(var(--color-secondary-1));
 }
 
 .media_icon:hover{
@@ -54,4 +52,4 @@
 
 .github_icon:hover{fill: #6e5494}
 .linkedin_icon:hover{fill: #0077B5}
-.gmail_icon:hover{fill: red}
+.gmail_icon:hover{fill: #ff0000}

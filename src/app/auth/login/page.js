@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { redirect } from 'next/navigation'
 import { setCookie } from 'nookies'
 import style  from './login.module.css'
@@ -14,20 +14,20 @@ export default function Login() {
   function checkLogin(e){
     e.preventDefault()
 
-    const queryApi = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: name,
-        password: password, 
-      })
-    }
-
     if (password && name)
     {
-      fetch(`${process.env.URL_ROUTE_BASE}`, queryApi)
+      const queryApi = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: name,
+          password: password, 
+        })
+      }
+
+      fetch(`${process.env.URL_ROUTE_BASE}/api/user/check`, queryApi)
       .then(async function (response) {
         response = await response.json()
 
@@ -50,6 +50,10 @@ export default function Login() {
     setPassword('')
     setName('')
   }
+
+  useEffect(() => {
+    if(error) alert('senha ou usuário incorretos!')
+  }, [])
 
   return (
     <>

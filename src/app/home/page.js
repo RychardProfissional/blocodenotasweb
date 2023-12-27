@@ -1,6 +1,6 @@
 'use client'
 
-import style from './page.module.css'
+import style from './home.module.css'
 import Footer from '@/app/components/footer'
 
 export default function Page() {

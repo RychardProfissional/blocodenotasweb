@@ -7,7 +7,7 @@
     width: 100vw;
     height: 100vh;
 
-    background-image: radial-gradient(farthest-corner at 30% 40%, #021849, #000b24 50%);
+    background-image: radial-gradient(farthest-corner at 30% 40%, rgb(var(--color-2)), rgb(var(--color-1)) 50%);
 }
 
 .header{
@@ -42,7 +42,7 @@
     border-radius: 5px;
     border: 2px solid transparent;
 
-    color: #b5b5b5;
+    color: rgb(var(--color-white-3));
     transition: .5s;
 
     padding: 1em 0;
@@ -53,18 +53,17 @@
 .nav_item:hover{
     letter-spacing: 0.1px;
     font-size: 101.5%;
-    color: #fff;
+    color: rgb(var(--color-white-1));
     
     margin: 0px 5px;
-    border-color: #ffffff17;
+    border-color: rgba(var(--color-white-5), 0.40);
 }
 
 .title{
-    font-family: 'Times New Roman', Times, serif;
-    font-weight: bolder;
+    font: bold 2.5em var(--font-1);
+
     text-align: center;
-    font-size: 2.5em;
-    color: #c2c1c1;
+    color: rgb(var(--color-white-2));
 }
 
 @media screen and (max-width: 905px){

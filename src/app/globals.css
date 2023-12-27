@@ -1,3 +1,35 @@
+:root{
+
+    /* CORES */
+    --color-1: 0, 11, 33;
+    --color-2: 0, 30, 90;
+    --color-3: 0, 47, 141;
+    --color-4: 0, 54, 162;
+    --color-5: 0, 76, 228;
+
+    --color-secondary-1: 75, 0, 25;
+    --color-secondary-2: 120, 0, 40;
+    --color-secondary-3: 165, 0, 55;
+    --color-secondary-4: 210, 0, 70;
+    --color-secondary-5: 255, 0, 85;
+
+    --color-strong-1: 0, 1, 33;
+    --color-strong-2: 0, 3, 90;
+    --color-strong-3: 0, 5, 141;
+    --color-strong-4: 0, 6, 162;
+    --color-strong-5: 0, 8, 228;
+
+    --color-white-1: 255, 255, 255; 
+    --color-white-2: 194, 193, 193;
+    --color-white-3: 181, 181, 181;
+    --color-white-4: 148, 148, 148;
+    --color-white-5: 120, 120, 120;
+
+    /* FONTES */
+    --font-1: 'Times New Roman', Times, serif;
+    --font-2: Verdana, Geneva, Tahoma, sans-serif;
+}
+
 *{
     margin: 0;
     padding: 0;
