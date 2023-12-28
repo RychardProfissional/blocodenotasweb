@@ -4,17 +4,11 @@ import Input from "@/app/components/input"
 import style from "./register.module.css"
 import { BsCheckCircleFill, BsCircleFill } from "react-icons/bs";
 import { useEffect, useState } from "react"
-import { parseCookies, setCookie } from "nookies";
-import { useRouter } from "next/router";
+import { destroyCookie, parseCookies, setCookie } from "nookies";
+import { useRouter } from "next/navigation";
 
 export default function Register(){
-
-    useEffect(() => {
-        const cookies = parseCookies()
-        if('INPUT_NAME' in cookies && 'INPUT_PASSWORD' in cookies){
-            useRouter().push('/')
-        }
-    },[])
+    const router = useRouter()
 
     const [name, setName] = useState('')
     const [nameChecked, setNameChecked] = useState(false)
@@ -41,7 +35,8 @@ export default function Register(){
         if(nameChecked || emailCheked || passwordChecked || passwordTwoChecked){
             alert('por favor incira informações validas')
         }
-        fetch(`${process.env.URL_ROUTE_BASE}/api/user/register`,{
+
+        fetch(`/api/user/register`,{
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
@@ -51,24 +46,25 @@ export default function Register(){
                 password: password,
                 email: email,
             })
-        }).then((response)=> {
-            response = response.json()
-
+        }).then(async function (response) {
+            response = await response.json()
+            
             if(response.ok)
             {
+                console.log('ok')
                 const cookieOptions = {maxAge: 28800, path: '/'};
 
                 setCookie(null, "INPUT_NAME", name, cookieOptions)
                 setCookie(null, "INPUT_PASSWORD", password, cookieOptions)
 
-                useRouter().push('/user')
+                router.push(`/${name}`)
             }
             else{
-                alert(`Error`)
-                setNameChecked(response.error.name)
-                setPasswordChecked(response.error.password)
+                alert(`Erro, valores invalidos`)
             } 
         }).catch(e => {
+            destroyCookie("INPUT_NAME")
+            destroyCookie("INPUT_PASSWORD")
             console.log(e)
             alert('erro ao tentar fazer requisição a api')
         })

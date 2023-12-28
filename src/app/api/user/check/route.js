@@ -2,13 +2,13 @@ import { readUser } from "@/database/user"
 import { NextResponse } from "next/server"
 
 export async function POST(request){
+  console.log('api checkuser acessada')
   const {name, password} = await request.json()
 
   const user = await readUser({
     name: name,
     password: password,
   },)
-  
   return NextResponse.json({ok: !!user || false})
 }
 

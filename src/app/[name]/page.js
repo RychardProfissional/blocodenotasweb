@@ -6,9 +6,12 @@ import { redirect } from "next/navigation"
 
 export default async function Page({ params }) {
   const urlName = params.name
-  const cookies = parseCookies()
+  const cookies = await parseCookies('/')
+  console.log(cookies)
   const [name, password] = [cookies['INPUT_NAME'], cookies['INPUT_PASSWORD']]
   var login = false
+  console.log(name)
+  console.log(password)
 
   if(name && password){    
     const queryApi = {
@@ -22,21 +25,17 @@ export default async function Page({ params }) {
       })
     }
     try{
-      const res = (await fetch(`${process.env.URL_ROUTE_BASE}/api/user/check`, queryApi)).json().ok || false
+      const res = await (await fetch(`${process.env.URL_ROUTE_BASE}/api/user/check`, queryApi)).json().ok
       
       if(res) login = true
       else {
-        destroyCookie('INPUT_NAME')
-        destroyCookie('INPUT_PASSWORD')
+        // destroyCookie('INPUT_NAME')
+        // destroyCookie('INPUT_PASSWORD')
       }
     }
     catch(err){
       console.log(err)
     }
-  }
-
-  if(false) {// acessar api/user/exist
-    redirect('/auth/login')
   }
   
   return login? <Logged name={urlName} />: <NotLoggedIn name={urlName} />

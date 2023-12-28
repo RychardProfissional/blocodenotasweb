@@ -4,10 +4,12 @@
     justify-content: center;
     min-height: 100vh;
     min-width: 100vw;
+    background-image: linear-gradient(to bottom right, rgb(var(--color-strong-1), 0.5), rgb(var(--color-strong-3), 0.5));
+    background-color: rgb(var(--color-white-5));
 }
 
 .content{
-    background-color: #fcd09b;
+    background-image: linear-gradient(to bottom right, rgb(var(--color-white-1)), rgb(var(--color-white-2)));
     border-radius: 7px;
     padding: 50px 40px;
     min-width: 600px;

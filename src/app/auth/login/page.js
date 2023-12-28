@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { redirect } from 'next/navigation'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { setCookie } from 'nookies'
 import style  from './login.module.css'
 import Input from '@/app/components/input'
@@ -9,11 +9,11 @@ import Input from '@/app/components/input'
 export default function Login() {
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState(false)
+  const router = useRouter()
 
   function checkLogin(e){
     e.preventDefault()
-
+    
     if (password && name)
     {
       const queryApi = {
@@ -26,41 +26,35 @@ export default function Login() {
           password: password, 
         })
       }
-
-      fetch(`${process.env.URL_ROUTE_BASE}/api/user/check`, queryApi)
+      
+      fetch(`http://localhost:3000/api/user/check`, queryApi)
       .then(async function (response) {
-        response = await response.json()
-
-        if (response.ok) {
+        console.log('ok')
+        const {ok} = await response.json()
+        
+        if (ok) {
           const cookieOptions = {maxAge: 28800, path: '/'};
-
+          
           setCookie(null, "INPUT_NAME", name, cookieOptions)
           setCookie(null, "INPUT_PASSWORD", password, cookieOptions)
-
-          redirect('/user')
+          
+          router.push(`/${name}`)
         }
-        else setError(true)
+        else alert('senha ou usuário incorretos!')
       })
       .catch(e => {
         console.log(e)
-        setError(true)
+        alert('erro ao tentar acessar api')
       })
     }
-      
-    setPassword('')
-    setName('')
   }
-
-  useEffect(() => {
-    if(error) alert('senha ou usuário incorretos!')
-  }, [])
 
   return (
     <>
       <form onSubmit={(e) => checkLogin(e)} className={style.form}>
         <h1>Login</h1>
-        <Input onInput={(e) => setName(e.target.value)} label='Nome:' />
-        <Input onInput={(e) => setPassword(e.target.value)} label='Senha:' />
+        <Input value={name} onChange={(e) => setName(e.target.value)} label='Nome:' />
+        <Input value={password} onChange={(e) => setPassword(e.target.value)} label='Senha:' />
         <Input type='submit' value='Entrar' />
       </form>
       <footer className={style.footer}>

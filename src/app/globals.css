@@ -19,6 +19,12 @@
     --color-strong-4: 0, 6, 162;
     --color-strong-5: 0, 8, 228;
 
+    --color-weak-1: 0, 255, 255;
+    --color-weak-2: 70, 255, 255;
+    --color-weak-3: 115, 255, 255;
+    --color-weak-4: 155, 255, 255;
+    --color-weak-5: 214, 255, 255;
+
     --color-white-1: 255, 255, 255; 
     --color-white-2: 194, 193, 193;
     --color-white-3: 181, 181, 181;
