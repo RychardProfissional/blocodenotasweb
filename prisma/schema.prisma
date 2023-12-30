@@ -17,6 +17,20 @@ model User {
   email     String @unique
   
   active    Boolean @default(true)
+  notes     Note[]
 
   @@map("users")
+}
+
+model Note {
+  noteid   Int @id @default(autoincrement())
+  createdAT DateTime @default(now())
+  updatedAT DateTime @updatedAt
+
+  information String
+  
+  user User @relation(fields: [userid], references: [id])
+  userid Int
+
+  @@map("notes")
 }
