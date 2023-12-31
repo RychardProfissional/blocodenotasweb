@@ -1,4 +1,3 @@
-import "@database/prisma";
 import style from "./layout.module.css";
 
 export default function Layout({ children }) {

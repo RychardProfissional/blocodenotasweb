@@ -2,10 +2,14 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 export async function POST(req) {
-  const user = await req.json();
+  let user = await req.json();
   let auth = false;
 
-  user = { name: user.name || false, password: user.password || false };
+  user = {
+    name: user.name || false,
+    password: user.password || false,
+    email: user.email || false,
+  };
 
   if (!Object.values(user).some((x) => !x)) {
     await fetch("http://localhost:3000/api/user/create", {

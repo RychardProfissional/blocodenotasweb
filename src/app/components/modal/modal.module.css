@@ -1,0 +1,51 @@
+.blur {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  height: 100vh;
+  width: 100vw;
+
+  background-color: rgb(var(--color-1), 0.5);
+  backdrop-filter: blur(0.5px);
+}
+
+.content {
+  background-color: rgb(var(--color-weak-1));
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.content header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.content header button {
+  height: 25px;
+  width: 25px;
+  font-size: 1.5em;
+  border-radius: 40%;
+  transition: 0.5s;
+  border: 1px solid transparent;
+}
+
+.content header button:hover {
+  border-color: rgb(var(--color-secondary-5), 0.1);
+  background-color: rgb(var(--color-white-1));
+  color: blue;
+}
+
+.content_options {
+  display: flex;
+}
+
+.option {
+  margin: 5px;
+  padding: 5px;
+  cursor: pointer;
+}

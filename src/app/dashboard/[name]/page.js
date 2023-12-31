@@ -8,11 +8,11 @@ export default async function Page({ params }) {
   const urlName = params.name;
   const cookieStore = cookies();
   const user = {
-    name: cookieStore.get("INPUT_NAME").value,
-    password: cookieStore.get("INPUT_PASSWORD").value,
+    name: cookieStore.get("INPUT_NAME"),
+    password: cookieStore.get("INPUT_PASSWORD"),
   };
 
-  var login = false;
+  let login = false;
 
   if (!Object.values(user).some((x) => !x)) {
     await fetch("http://localhost:3000/api/user/read", {
@@ -23,7 +23,7 @@ export default async function Page({ params }) {
       body: JSON.stringify(user),
     })
       .then(async (res) => {
-        login = await res.json().ok;
+        login = (await res.json()).ok;
 
         if (!login) {
           cookies().delete("INPUT_NAME");
@@ -35,5 +35,5 @@ export default async function Page({ params }) {
       });
   }
 
-  return login ? <Logged name={urlName} /> : <NoLogged name={urlName} />;
+  return true ? <Logged /> : <NoLogged name={urlName} />;
 }

@@ -2,13 +2,12 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 export async function POST(req) {
-  const user = await req.json();
+  var user = await req.json();
   let auth = false;
 
   user = {
     name: user.name || false,
     password: user.password || false,
-    email: user.email,
   };
 
   if (!Object.values(user).some((x) => !x)) {
@@ -31,6 +30,8 @@ export async function POST(req) {
       cookies().set("INPUT_PASSWORD", user.password, cookieOptions);
     }
   }
+
+  console.log(auth);
 
   return NextResponse.json({ auth: auth });
 }
