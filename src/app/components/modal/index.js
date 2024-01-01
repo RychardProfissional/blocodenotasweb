@@ -5,14 +5,21 @@ import { createPortal } from "react-dom";
 import style from "./modal.module.css";
 
 export function Modal({
-  children = <></>,
-  value = "abrir modal",
-  btnClass = "",
+  btnClass = "", // Estilo para o botão que abre o model
+  value = "abrir modal", // valor que vai ficar dentro do botão que abre o model
   className = "",
-  headerContent = {},
+  headerContent = [], // elementos que ficarão no reader
+  children = <></>, // elemeto ou elementos que ficaram dentro do model
+  exitModal = () => {
+    true;
+  }, // função que executada antes de fechar o model, se ela retornar  valor falsy não fechara o modal
   ...rest
 }) {
   const [active, setActive] = useState(false);
+
+  const exit = () => {
+    setActive(exitModal());
+  };
 
   const Content = () => {
     return createPortal(
@@ -20,17 +27,16 @@ export function Modal({
         <div className={`${style.content} ${className}`}>
           <header>
             <div className={style.content_options}>
-              {Object.keys(headerContent).map((e, i) => (
-                <div
-                  key={`${e}${i}`}
-                  className={style.option}
-                  onClick={() => headerContent[e]()}
-                >
-                  {e}
-                </div>
-              ))}
+              {Array.isArray(headerContent) &&
+                headerContent.map((e, i) => (
+                  <div key={`${e}${i}`} className={style.option}>
+                    {e}
+                  </div>
+                ))}
             </div>
-            <button onClick={() => setActive(false)}>×</button>
+            <button className={style.exit} onClick={() => exit()}>
+              ×
+            </button>
           </header>
           {children}
         </div>

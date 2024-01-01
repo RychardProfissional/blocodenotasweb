@@ -2,6 +2,7 @@
 
 import Footer from "@/app/components/footer";
 import Modal from "@/app/components/modal";
+import { MdEdit } from "react-icons/md";
 
 function createNote() {
   console.log("criando nota");
@@ -16,16 +17,8 @@ export default function Logged() {
       <header></header>
       <div>
         <section>
-          <Modal
-            headerContent={{
-              teste: () => console.log("teste"),
-              seila: () => console.log("seila"),
-            }}
-            btnClass=""
-            value="criar nota"
-          >
-            <div>apenas um teste sfdasdfasdf</div>
-            <div>mais um teste</div>
+          <Modal headerContent={[<div>opção1</div>, <MdEdit />]}>
+            <div>proporção e tamanho</div>
           </Modal>
         </section>
         <section></section>
