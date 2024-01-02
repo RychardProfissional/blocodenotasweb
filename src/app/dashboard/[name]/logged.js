@@ -17,8 +17,17 @@ export default function Logged() {
       <header></header>
       <div>
         <section>
-          <Modal headerContent={[<div>opção1</div>, <MdEdit />]}>
-            <div>proporção e tamanho</div>
+          <Modal headerContent={[<div>salvar</div>, <MdEdit />, "texto"]}>
+            <textarea
+              style={{
+                color: "white",
+                flexGrow: 1,
+                backgroundColor: "rgb(var(--color-white-1), 0.1)",
+                resize: "none",
+              }}
+            >
+              proporção e tamanho
+            </textarea>
           </Modal>
         </section>
         <section></section>

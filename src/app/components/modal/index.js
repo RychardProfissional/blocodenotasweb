@@ -25,12 +25,14 @@ export function Modal({
     return createPortal(
       <div className={style.blur} {...rest}>
         <div className={`${style.content} ${className}`}>
-          <header>
+          <header className={`${headerContent.length && style.header}`}>
             <div className={style.content_options}>
               {Array.isArray(headerContent) &&
                 headerContent.map((e, i) => (
-                  <div key={`${e}${i}`} className={style.option}>
-                    {e}
+                  <div className={style.content_option}>
+                    <div key={`${e}${i}`} className={style.option}>
+                      {e}
+                    </div>
                   </div>
                 ))}
             </div>
@@ -38,7 +40,7 @@ export function Modal({
               ×
             </button>
           </header>
-          {children}
+          <div className={style.content_children}>{children}</div>
         </div>
       </div>,
       document.body
@@ -48,7 +50,7 @@ export function Modal({
   return (
     <>
       <button
-        className={`${style.btn_outside} ${btnClass}`}
+        className={`${style.btn} ${btnClass}`}
         onClick={() => setActive(true)}
       >
         {value}
