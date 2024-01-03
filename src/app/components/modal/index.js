@@ -23,8 +23,11 @@ export function Modal({
 
   const Content = () => {
     return createPortal(
-      <div className={style.blur} {...rest}>
-        <div className={`${style.content} ${className}`}>
+      <div className={style.blur} {...rest} onClick={exit}>
+        <div
+          className={`${style.content} ${className}`.trim()}
+          onClick={(e) => e.stopPropagation()}
+        >
           <header className={`${headerContent.length && style.header}`}>
             <div className={style.content_options}>
               {Array.isArray(headerContent) &&
@@ -36,7 +39,7 @@ export function Modal({
                   </div>
                 ))}
             </div>
-            <button className={style.exit} onClick={() => exit()}>
+            <button className={`${style.exit} ${style.option}`} onClick={exit}>
               ×
             </button>
           </header>

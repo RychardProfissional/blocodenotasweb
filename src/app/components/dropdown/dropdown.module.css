@@ -1,0 +1,25 @@
+.drop_down {
+  z-index: 999;
+}
+
+.drop_down[open] > .container_menu {
+  display: block !important;
+}
+
+.container_menu {
+  display: none;
+  position: relative;
+}
+
+.btn {
+  cursor: pointer;
+}
+
+.drop_content {
+  top: 100%;
+  position: absolute;
+
+  padding: 5px;
+  z-index: 100;
+  border-radius: 3px;
+}

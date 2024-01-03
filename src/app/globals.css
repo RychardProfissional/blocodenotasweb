@@ -27,10 +27,16 @@
   --color-weak-5: 214, 255, 255;
 
   --color-white-1: 255, 255, 255;
-  --color-white-2: 194, 193, 193;
+  --color-white-2: 200, 200, 200;
   --color-white-3: 181, 181, 181;
   --color-white-4: 148, 148, 148;
   --color-white-5: 120, 120, 120;
+
+  --color-black-1: 80, 80, 80;
+  --color-black-2: 60, 60, 60;
+  --color-black-3: 40, 40, 40;
+  --color-black-4: 20, 20, 20;
+  --color-black-5: 0, 0, 0;
 
   /* FONTES */
   --font-1: "Times New Roman", Times, serif;
@@ -53,7 +59,7 @@
 
 html,
 body {
-  min-width: 100vw;
+  min-width: 100vh;
   min-height: 100vh;
 }
 

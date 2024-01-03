@@ -1,23 +1,31 @@
-"use client";
-
+import DropDown from "@/app/components/dropdown";
 import Footer from "@/app/components/footer";
 import Modal from "@/app/components/modal";
+import { BsPersonCircle } from "react-icons/bs";
 import { MdEdit } from "react-icons/md";
+import style from "./logged.module.css";
+import { cookies } from "next/headers";
 
-function createNote() {
-  console.log("criando nota");
-  var frame = <div>teste de criação de frame</div>;
-
-  document.body.appendChild(frame);
-}
-
-export default function Logged() {
+export async function Logged() {
   return (
-    <>
-      <header></header>
-      <div>
-        <section>
-          <Modal headerContent={[<div>salvar</div>, <MdEdit />, "texto"]}>
+    <div className={style.container}>
+      <header className={style.header}>
+        <div>dashboard</div>
+        <DropDown
+          className={style.profile}
+          DropElement={<BsPersonCircle className={style.profile_icon} />}
+          classMenu={style.profile_drop}
+        >
+          <div>teste</div>
+          <div>sair</div>
+        </DropDown>
+      </header>
+      <main className={style.main}>
+        <section className={style.menu}>
+          <Modal
+            headerContent={[<div>salvar</div>]}
+            value={<div className={style.create_note}>Criar nota</div>}
+          >
             <textarea
               style={{
                 color: "white",
@@ -30,9 +38,9 @@ export default function Logged() {
             </textarea>
           </Modal>
         </section>
-        <section></section>
-      </div>
-      {/* <Footer /> */}
-    </>
+        <section className={style.content}></section>
+      </main>
+      <Footer />
+    </div>
   );
 }
