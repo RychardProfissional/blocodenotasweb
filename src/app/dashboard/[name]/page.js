@@ -6,33 +6,24 @@ import NoLogged from "./nologged";
 
 export default async function Page({ params }) {
   const urlName = params.name;
-  // const cookieStore = cookies();
-  // const user = {
-  //   name: cookieStore.get("INPUT_NAME"),
-  //   password: cookieStore.get("INPUT_PASSWORD"),
-  // };
+  // const token = cookies().get("TOKEN");
 
   // let login = false;
 
-  // if (!Object.values(user).some((x) => !x)) {
-  //   await fetch("http://localhost:3000/api/user/read", {
+  // if (token) {
+  //   await fetch("http://localhost:3000/api/auth/check", {
   //     method: "POST",
   //     headers: {
   //       "Content-Type": "application/json",
   //     },
-  //     body: JSON.stringify(user),
+  //     body: JSON.stringify(token),
   //   })
   //     .then(async (res) => {
   //       login = (await res.json()).ok;
 
-  //       if (!login) {
-  //         cookies().delete("INPUT_NAME");
-  //         cookies().delete("INPUT_PASSWORD");
-  //       }
+  //       !login && cookies.delete("TOKEN");
   //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
+  //     .catch((err) => console.log(err));
   // }
 
   return true ? <Logged /> : <NoLogged name={urlName} />;

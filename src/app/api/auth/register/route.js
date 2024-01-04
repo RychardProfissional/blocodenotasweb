@@ -1,35 +1,25 @@
-import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { NextResponse } from "next/server"
+import { cookies } from "next/headers"
+import { sign } from "jsonwebtoken"
+import { createUser } from "@/database/user"
 
 export async function POST(req) {
-  let user = await req.json();
-  let auth = false;
-
-  user = {
-    name: user.name || false,
-    password: user.password || false,
-    email: user.email || false,
-  };
-
-  if (!Object.values(user).some((x) => !x)) {
-    await fetch("http://localhost:3000/api/user/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    })
-      .then(async (res) => {
-        auth = (await res.json()).ok;
-      })
-      .catch((err) => console.log(err));
-
-    if (auth) {
-      const cookieOptions = { path: "/" };
-
-      cookies().set("INPUT_NAME", user.name, cookieOptions);
-      cookies().set("INPUT_PASSWORD", user.password, cookieOptions);
-    }
+  const params = await req.json()
+  const data = {
+    name: params.name,
+    password: params.password,
+    email: params.email,
   }
-  return NextResponse.json({ auth: auth });
+
+  const auth =
+    !Object.values(data).some((x) => !x) && !!(await createUser(data))
+
+  auth &&
+    cookies().set(
+      "TOKEN",
+      sign(data, process.env.KEY_TOKEN, { expiresIn: 3 * 60 * 60 }),
+      { path: "/" }
+    )
+
+  return NextResponse.json({ auth: auth })
 }

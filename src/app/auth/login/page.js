@@ -1,17 +1,17 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import style from "./login.module.css";
-import Input from "@/app/components/input";
+import InputForm from "@/app/components/style/input-form";
 
 export default function Login() {
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
   const router = useRouter();
 
-  async function checkLogin(e) {
-    e.preventDefault();
+  async function checkLogin(formData) {
+    const name = formData.get("name");
+    const password = formData.get("password");
+    console.log(name);
+
     if (!name || !password) {
       alert("por favor preencha todos os campos");
       return;
@@ -38,26 +38,15 @@ export default function Login() {
 
     if (auth) router.push(`/dashboard/${name}`);
     else alert("Usuário ou senha incorretos");
-
-    setPassword("");
   }
 
   return (
     <>
-      <form onSubmit={(e) => checkLogin(e)} className={style.form}>
+      <form action={checkLogin} className={style.form}>
         <h1>Login</h1>
-        <Input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          label="Nome:"
-        />
-        <Input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          label="Senha:"
-        />
-        <Input type="submit" value="Entrar" />
+        <InputForm name="name" label="Nome:" />
+        <InputForm name="password" label="Senha:" type="password" />
+        <InputForm type="submit" value="Entrar" />
       </form>
       <footer className={style.footer}>
         <a href="#">Recuperar senha</a> |{" "}

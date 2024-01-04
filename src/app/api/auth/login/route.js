@@ -1,37 +1,18 @@
-import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { NextResponse } from "next/server"
+import { cookies } from "next/headers"
+import { sign } from "jsonwebtoken"
+import { readUser } from "@/database/user"
 
 export async function POST(req) {
-  var user = await req.json();
-  let auth = false;
+  const params = await req.json()
+  const where = { name: params.name, password: params.password }
 
-  user = {
-    name: user.name || false,
-    password: user.password || false,
-  };
+  const auth = !Object.values(where).some((x) => !x) && !!(await readUser(where))
 
-  if (!Object.values(user).some((x) => !x)) {
-    await fetch(`http://localhost:3000/api/user/read`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
+  auth &&
+    cookies().set("TOKEN", sign(where, process.env.KEY_TOKEN, { expiresIn: 3 * 60 * 60 }), {
+      path: "/",
     })
-      .then(async (res) => {
-        auth = (await res.json()).ok;
-      })
-      .catch((err) => console.log(err));
 
-    if (auth) {
-      const cookieOptions = { path: "/" };
-
-      cookies().set("INPUT_NAME", user.name, cookieOptions);
-      cookies().set("INPUT_PASSWORD", user.password, cookieOptions);
-    }
-  }
-
-  console.log(auth);
-
-  return NextResponse.json({ auth: auth });
+  return NextResponse.json({ auth: auth })
 }

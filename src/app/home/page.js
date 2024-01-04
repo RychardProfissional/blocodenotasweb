@@ -1,6 +1,6 @@
 "use client";
 
-import Footer from "@/app/components/footer";
+import Footer from "@/app/components/functionalities/footer";
 import style from "./home.module.css";
 
 export default function Page() {
