@@ -17,8 +17,7 @@ export const User = {
     }
   },
 
-  async read(name, password, id) {
-    const where = id ? { id: id } : { name: name, password: password }
+  async read(where) {
     try {
       return await prisma.user.findUnique({ where: where })
     } catch (err) {

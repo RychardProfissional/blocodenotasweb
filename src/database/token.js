@@ -26,7 +26,7 @@ export const Token = (() => {
   }
   return {
     create(name, password) {
-      const expiresIn = 3 * 3600
+      const expiresIn = process.env.TOKEN_LIFETIME
       const token = jwt.sign(
         { nome: name, password: password },
         process.env.KEY_TOKEN,

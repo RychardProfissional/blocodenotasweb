@@ -10,13 +10,11 @@ const Folder = {
     }
   },
 
-  async read(name, id, userId) {
+  async read(where) {
     try {
-      if (!userId) {
-        return await prisma.folder.findUnique({
-          where: id ? { id: id } : { name: name },
-        })
-      }
+      return await prisma.folder.findUnique({
+        where: where,
+      })
     } catch (err) {
       return false
     }
@@ -30,9 +28,9 @@ const Folder = {
     }
   },
 
-  async delete(where) {
+  async delete(id) {
     try {
-      return await prisma.folder.delete({ where: where })
+      return await prisma.folder.delete({ id: id })
     } catch (err) {
       return null
     }

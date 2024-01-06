@@ -1,5 +1,7 @@
 import prisma from "@/database/prisma"
 
+const interval = process.env.REVOKED_TOKEN_CLEANUP_INTERVAL
+
 function deleteExpirationTokens() {
   prisma.revokedtoken.deleteMany({
     where: {
@@ -9,7 +11,7 @@ function deleteExpirationTokens() {
     },
   })
 
-  setTimeout(() => deleteExpirationTokens(), 24 * 3600)
+  setTimeout(() => deleteExpirationTokens(), interval)
 }
 
 deleteExpirationTokens()
