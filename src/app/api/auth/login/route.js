@@ -1,18 +1,12 @@
 import { NextResponse } from "next/server"
-import { cookies } from "next/headers"
-import { sign } from "jsonwebtoken"
-import { readUser } from "@/database/user"
+import User from "@/database/user"
+import Token from "@/database/token"
 
 export async function POST(req) {
-  const params = await req.json()
-  const where = { name: params.name, password: params.password }
+  const { name = false, password = false } = await req.json()
+  const auth = name && password && !!(await User.read(name, password))
 
-  const auth = !Object.values(where).some((x) => !x) && !!(await readUser(where))
-
-  auth &&
-    cookies().set("TOKEN", sign(where, process.env.KEY_TOKEN, { expiresIn: 3 * 60 * 60 }), {
-      path: "/",
-    })
+  auth && Token.create(name, password)
 
   return NextResponse.json({ auth: auth })
 }

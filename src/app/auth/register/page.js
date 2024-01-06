@@ -1,43 +1,43 @@
-"use client";
+"use client"
 
-import InputForm from "@/app/components/style/input-form";
-import style from "./register.module.css";
-import { BsCheckCircleFill, BsCircleFill } from "react-icons/bs";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import DropDown from "@/app/components/functionalities/dropdown";
+import InputForm from "@/app/auth/components/input-form"
+import style from "./register.module.css"
+import { BsCheckCircleFill, BsCircleFill } from "react-icons/bs"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import DropDown from "@/app/components/functionalities/dropdown"
 
 export default function Register() {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [name, setName] = useState("");
-  const [nameChecked, setNameChecked] = useState(false);
+  const [name, setName] = useState("")
+  const [nameChecked, setNameChecked] = useState(false)
 
-  const [email, setEmail] = useState("");
-  const [emailCheked, setEmailCheked] = useState(false);
+  const [email, setEmail] = useState("")
+  const [emailCheked, setEmailCheked] = useState(false)
 
-  const [password, setPassword] = useState("");
-  const [passwordChecked, setPasswordChecked] = useState(false);
+  const [password, setPassword] = useState("")
+  const [passwordChecked, setPasswordChecked] = useState(false)
 
-  const [passwordTwo, setPasswordTwo] = useState("");
-  const [passwordTwoChecked, setPasswordTwoChecked] = useState(false);
+  const [passwordTwo, setPasswordTwo] = useState("")
+  const [passwordTwoChecked, setPasswordTwoChecked] = useState(false)
 
   const [passwordChecks, setPasswordChecks] = useState({
     lengthMin: false,
     specialChar: false,
     lowercase: false,
     uppercase: false,
-  });
+  })
 
   async function registerUser(e) {
-    e.preventDefault();
+    e.preventDefault()
 
     if (nameChecked || emailCheked || passwordChecked || passwordTwoChecked) {
-      alert("por favor incira informações validas");
-      return;
+      alert("por favor incira informações validas")
+      return
     }
 
-    let auth = false;
+    let auth = false
 
     await fetch(`http://localhost:3000/api/auth/register`, {
       method: "POST",
@@ -51,27 +51,27 @@ export default function Register() {
       }),
     })
       .then(async (response) => {
-        auth = (await response.json()).auth;
-        if (auth) router.push(`/dashboard/${name}`);
-        else alert(`[ERRO] Impossivel acessar a api no momento`);
+        auth = (await response.json()).auth
+        if (auth) router.push(`/dashboard/${name}`)
+        else alert(`[ERRO] Impossivel acessar a api no momento`)
       })
       .catch((e) => {
-        console.log(e);
-        alert("[ERRO] Impossivel acessar a api no momento");
-      });
+        console.log(e)
+        alert("[ERRO] Impossivel acessar a api no momento")
+      })
 
-    setPassword("");
-    setPasswordTwo("");
+    setPassword("")
+    setPasswordTwo("")
   }
 
   function handleName(n) {
-    setNameChecked(!n && n.indexOf(" ") != -1 && n.length);
-    setName(n);
+    setNameChecked(!n && n.indexOf(" ") != -1 && n.length)
+    setName(n)
   }
 
   function handleEmail(e) {
-    setEmailCheked(!/\S+@\S+\.\S+/.test(e) && e.length);
-    setEmail(e);
+    setEmailCheked(!/\S+@\S+\.\S+/.test(e) && e.length)
+    setEmail(e)
   }
 
   function handlePassword(p) {
@@ -80,20 +80,20 @@ export default function Register() {
       specialChar: /[^a-zA-Z0-9]/.test(p),
       lowercase: /[a-z]/.test(p),
       uppercase: /[A-Z]/.test(p),
-    };
+    }
 
-    setPasswordChecked(!Object.values(pc).every((v) => v) && p.length);
-    setPasswordChecks(pc);
-    setPassword(p);
+    setPasswordChecked(!Object.values(pc).every((v) => v) && p.length)
+    setPasswordChecks(pc)
+    setPassword(p)
   }
 
   function handlePasswordTwo(pTwo) {
-    setPasswordTwoChecked(pTwo != password && pTwo.length);
-    setPasswordTwo(pTwo);
+    setPasswordTwoChecked(pTwo != password && pTwo.length)
+    setPasswordTwo(pTwo)
   }
 
   const ConfirmIcon = ({ confirm }) =>
-    confirm ? <BsCheckCircleFill fill="green" /> : <BsCircleFill fill="red" />;
+    confirm ? <BsCheckCircleFill fill="green" /> : <BsCircleFill fill="red" />
 
   return (
     <>
@@ -156,9 +156,8 @@ export default function Register() {
         <InputForm className={style.input} type="submit" value="cadastrar-se" />
       </form>
       <footer className={style.footer}>
-        <a href="/auth/login">Logar</a> <span>|</span>{" "}
-        <a href="#">Recuperar conta</a>
+        <a href="/auth/login">Logar</a> <span>|</span> <a href="#">Recuperar conta</a>
       </footer>
     </>
-  );
+  )
 }

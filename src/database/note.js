@@ -1,33 +1,41 @@
 import prisma from "./prisma"
 
-export async function createNote(data) {
-  try {
-    return await prisma.note.create({ data: data })
-  } catch (err) {
-    return null
-  }
-}
+export const Note = {
+  async create(data) {
+    try {
+      return await prisma.note.create({ data: data })
+    } catch (err) {
+      return null
+    }
+  },
 
-export async function readNote(where) {
-  try {
-    return await prisma.note.findUnique({ where: where })
-  } catch (err) {
-    return false
-  }
-}
+  async read(id, folderid) {
+    try {
+      if (folderid) {
+        return await prisma.note.findMany({ where: { folderid: folderid } })
+      }
+      return await prisma.note.findUnique({ where: { id: id } })
+    } catch (err) {
+      return false
+    }
+  },
 
-export async function updateNote(where, data) {
-  try {
-    return await prisma.note.update({ where: where, data: data })
-  } catch (err) {
-    return null
-  }
-}
+  async update(id) {
+    try {
+      return await prisma.note.update({ where: { id: id }, data: data })
+    } catch (err) {
+      return null
+    }
+  },
 
-export async function deleteNote(where) {
-  try {
-    return await prisma.note.delete({ where: where })
-  } catch (err) {
-    return null
-  }
+  async delete(id, folderid) {
+    try {
+      if (folderid) {
+        return await prisma.note.deleteMany({ where: { folderid: folderid } })
+      }
+      return await prisma.note.delete({ where: { id: id } })
+    } catch (err) {
+      return null
+    }
+  },
 }

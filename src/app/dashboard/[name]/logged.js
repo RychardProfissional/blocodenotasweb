@@ -1,9 +1,14 @@
+"use client"
+
 import DropDown from "@/app/components/functionalities/dropdown"
 import Modal from "@/app/components/functionalities/modal"
 import { BsPersonCircle } from "react-icons/bs"
 import style from "./logged.module.css"
+import Note from "../components/note"
+import Folder from "../components/folder"
+import { Search } from "../components/search"
 
-export async function Logged() {
+export function Logged() {
   return (
     <div className={style.container}>
       <header className={style.header}>
@@ -22,11 +27,14 @@ export async function Logged() {
           <div>
             <div>
               <div>home</div>
-              <input type="text" value="pesquisar" />
+              <Search listItens={{}} />
             </div>
             <h3>Suas pastas</h3>
             <DropDown DropElement={<div>+</div>}>
-              <Modal headerContent={[<div>salvar</div>]} value={<div>Criar nova pasta</div>}>
+              <Modal
+                headerContent={[<div>salvar</div>]}
+                value={<div>Criar nova pasta</div>}
+              >
                 {/* ---------- create folder */}
                 <textarea className={style.create_nota_textarea} />
               </Modal>
@@ -46,12 +54,21 @@ export async function Logged() {
           <div>
             {/* repetir até não ter mais pastas */}
             {/* ------------- read folder */}
-            <div>
-              {/* ao clicar neste elemente deve modificar a section content */}
-              <img alt="icone da pasta" />
-              <span>nome da pasta</span>
-              <div>quantidade de anotações na pasta</div>
-            </div>
+
+            <Folder
+              name="nome da pasta"
+              src="#"
+              alt="logo pasta"
+              amount={45}
+              onClick={() => console.log("folder")}
+            />
+            <Folder
+              name="nome da pasta"
+              src="#"
+              alt="logo pasta"
+              amount={45}
+              onClick={() => console.log("folder")}
+            />
           </div>
           <div>
             quer ver o codigo deste site? acesse meu <a href="#">github</a>
@@ -62,52 +79,77 @@ export async function Logged() {
         <section>
           {/* repetir */}
           {/* ---------- read folders */}
-          <div>
-            <img alt="icone da pasta" />
-            <span>nome da pasta</span>
-            <div>quantidade de anotações na pasta</div>
-          </div>
-          <div>
+
+          <Folder
+            name="nome da pasta"
+            src="#"
+            alt="logo pasta"
+            amount={45}
+            onClick={() => console.log("folder")}
+          >
             {/* deve ter wrap, ou display grad */}
             {/* esta div deve se repetir*/}
             {/* --------- read notes */}
-            <div>
-              <div>
-                <span>nome da anotação</span>
-                <span>#id da anotação</span>
-                <div>trecho da anotação</div>
-              </div>
-            </div>
-          </div>
+            <Note name="nome da anotação" id={2}>
+              anotação qualquer
+            </Note>
+            <Note name="nome da anotação" id={2}>
+              anotação qualquer
+            </Note>
+          </Folder>
+          <Folder
+            name="nome da pasta"
+            src="#"
+            alt="logo pasta"
+            amount={45}
+            onClick={() => console.log("folder")}
+          >
+            {/* deve ter wrap, ou display grad */}
+            {/* esta div deve se repetir*/}
+            {/* --------- read notes */}
+            <Note name="nome da anotação" id={2}>
+              anotação qualquer
+            </Note>
+          </Folder>
         </section>
 
         {/* esse sera o home da pagina */}
-        <section className={style.content}>
-          {/* esta div deve se repetir até chegar no fundo da tela ou acabar as pastas */}
-          {/* ----------- read folders? */}
+        {/* <section className={style.content}>
           <div>
             <div>
               <span>Nome da pasta</span>
               <div>quantidade de anotações</div>
             </div>
             <div>
-              {/* esta div deve se repetir ate chegar na lateral direta da tela ou acabar as anotações */}
-              {/* ---------------- read notes */}
-              <div>
-                <span>nome da anotação</span>
-                <span>#id da anotação</span>
-                <div>trecho da anotação</div>
-              </div>
+              <Note name="nome da anotação" id={2}>
+                anotação qualquer
+              </Note>
+              <Note name="nome da anotação" id={2}>
+                anotação qualquer
+              </Note>
             </div>
           </div>
-        </section>
+        </section> */}
       </main>
     </div>
   )
 }
 
-// passo 1 componetizar
-// passo 2 criar apis
-// passo 3 testar os dois juntos
-// passo 4 estilizar
-// passo 5 otimizar ------ não é pra fazer isto antes.
+/* 
+  1 componetizar 
+    1.1 "Fazer" o html ok
+    1.2 Criar e testar funcionalidades
+    1.3 Estilizar
+
+  2 criar apis
+    - logoff, finalizar login e colocar token na lista negra
+    - busca, busca entre os nomes das pastas e notas
+    - folders, retorna um array com as pastas
+    - notas, retorna um array com as anotações de uma pasta
+  --- todos devem verificar o token de authentificação e 
+  --- ter testes unitarios
+
+  3 testar os dois juntos
+  4 estilizar
+  5 otimizar ------ não é pra fazer isto antes.
+*/

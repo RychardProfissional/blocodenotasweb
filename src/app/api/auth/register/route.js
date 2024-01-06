@@ -1,25 +1,12 @@
 import { NextResponse } from "next/server"
-import { cookies } from "next/headers"
-import { sign } from "jsonwebtoken"
-import { createUser } from "@/database/user"
+import User from "@/database/user"
+import Token from "@/database/token"
 
 export async function POST(req) {
-  const params = await req.json()
-  const data = {
-    name: params.name,
-    password: params.password,
-    email: params.email,
-  }
+  const { name, password, email } = await req.json()
+  const auth = name && password && !!(await User.create(name, password, email))
 
-  const auth =
-    !Object.values(data).some((x) => !x) && !!(await createUser(data))
-
-  auth &&
-    cookies().set(
-      "TOKEN",
-      sign(data, process.env.KEY_TOKEN, { expiresIn: 3 * 60 * 60 }),
-      { path: "/" }
-    )
+  auth && Token.create(name, password)
 
   return NextResponse.json({ auth: auth })
 }

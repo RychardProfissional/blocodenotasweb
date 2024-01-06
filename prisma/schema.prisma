@@ -13,8 +13,8 @@ model User {
   updatedAT DateTime @updatedAt
 
   name      String @unique
-  password  String
   email     String?
+  password  String
   active    Boolean @default(true)
   
   folders   UserToFolder[]
@@ -22,13 +22,14 @@ model User {
 }
 
 model UserToFolder{
-  user      User @relation(fields: [userid], references: [id])
   userid    Int
-
-  folder    Folder @relation(fields: [folderid], references: [id])
   folderid  Int
 
+  user      User @relation(fields: [userid], references: [id])
+  folder    Folder @relation(fields: [folderid], references: [id])
+
   @@id([userid, folderid])
+  @@map("userstofolders")
 }
 
 model Folder{
@@ -37,10 +38,10 @@ model Folder{
   updatedAT   DateTime @updatedAt
 
   name        String
+  active      Boolean @default(true)
 
   users       UserToFolder[]
   notes       Note[]
-  active      Boolean @default(true)
 
   @@map("folders")
 }
@@ -54,8 +55,19 @@ model Note {
   information String
   active      Boolean @default(true)
 
+  folderid    Int 
+
   folder      Folder @relation(fields: [folderid], references: [id])
-  folderid    Int
 
   @@map("notes")
+}
+
+model RevokedToken{
+  id        Int @id @default(autoincrement())
+  createdAT DateTime @default(now())
+
+  token     String
+  revokedAT DateTime 
+
+  @@map("revokedtokens")
 }

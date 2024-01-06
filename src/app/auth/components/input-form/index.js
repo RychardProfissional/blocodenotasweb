@@ -1,12 +1,30 @@
-import styled from "styled-components";
-import css from "styled-jsx/css";
+import styled from "styled-components"
+import css from "styled-jsx/css"
+
+export const InputForm = ({ type = "text", error = false, className = "", label, ...rest }) => {
+  const Input = typeInput[type]
+  switch (type) {
+    case "submit":
+      return <Input {...{ ...rest, type: type, className: className }} />
+    case "text":
+    case "password":
+      return (
+        <Container className={className}>
+          <Input {...{ ...rest, type: type }} />
+          <LabelInput>{label}</LabelInput>
+        </Container>
+      )
+    default:
+      return <input {...{ ...rest, type: type }} />
+  }
+}
 
 const textpass = css`
   width: 100%;
   height: 100%;
   padding: 25px 20px 15px 25px;
   opacity: 90%;
-`;
+`
 
 const typeInput = {
   submit: styled.input`
@@ -34,7 +52,7 @@ const typeInput = {
   text: styled.input`
     ${textpass}
   `,
-};
+}
 
 const Container = styled.div`
   position: relative;
@@ -65,7 +83,7 @@ const Container = styled.div`
   & input:valid + span {
     opacity: 100%;
   }
-`;
+`
 
 const LabelInput = styled.span`
   position: absolute;
@@ -73,30 +91,6 @@ const LabelInput = styled.span`
   left: 7px;
   top: 7px;
   opacity: 70%;
-`;
+`
 
-export const InputForm = ({
-  type = "text",
-  error = false,
-  className = "",
-  label,
-  ...rest
-}) => {
-  const Input = typeInput[type];
-  switch (type) {
-    case "submit":
-      return <Input {...{ ...rest, type: type, className: className }} />;
-    case "text":
-    case "password":
-      return (
-        <Container className={className}>
-          <Input {...{ ...rest, type: type }} />
-          <LabelInput>{label}</LabelInput>
-        </Container>
-      );
-    default:
-      return <input {...{ ...rest, type: type }} />;
-  }
-};
-
-export default InputForm;
+export default InputForm

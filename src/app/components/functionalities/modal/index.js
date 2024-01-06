@@ -1,8 +1,8 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { createPortal } from "react-dom";
-import style from "./modal.module.css";
+import { useState } from "react"
+import { createPortal } from "react-dom"
+import style from "./modal.module.css"
 
 export function Modal({
   btnClass = "", // Estilo para o botão que abre o model
@@ -11,15 +11,12 @@ export function Modal({
   headerContent = [], // elementos que ficarão no reader
   children = <></>, // elemeto ou elementos que ficaram dentro do model
   exitModal = () => {
-    true;
+    true
   }, // função que executada antes de fechar o model, se ela retornar  valor falsy não fechara o modal
   ...rest
 }) {
-  const [active, setActive] = useState(false);
-
-  const exit = () => {
-    setActive(exitModal());
-  };
+  const [active, setActive] = useState(false)
+  const exit = () => setActive(exitModal())
 
   const Content = () => {
     return createPortal(
@@ -47,20 +44,17 @@ export function Modal({
         </div>
       </div>,
       document.body
-    );
-  };
+    )
+  }
 
   return (
     <>
-      <button
-        className={`${style.btn} ${btnClass}`}
-        onClick={() => setActive(true)}
-      >
+      <button className={`${style.btn} ${btnClass}`} onClick={() => setActive(true)}>
         {value}
       </button>
       {active && <Content />}
     </>
-  );
+  )
 }
 
-export default Modal;
+export default Modal

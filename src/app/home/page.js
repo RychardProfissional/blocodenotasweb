@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import Footer from "@/app/components/functionalities/footer";
-import style from "./home.module.css";
+import Footer from "@/app/components/style/footer"
+import style from "./home.module.css"
 
 export default function Page() {
   return (
@@ -27,5 +27,5 @@ export default function Page() {
       </div>
       <Footer />
     </div>
-  );
+  )
 }

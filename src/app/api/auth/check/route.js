@@ -1,18 +1,13 @@
-import { readUser } from "@/database/user"
+import User from "@/database/user"
 import { NextResponse } from "next/server"
-import { verify } from "jsonwebtoken"
+import Token from "@/database/token"
 
 export async function POST(req) {
-  const token = (await req.json()).token
-  let auth = false
-  if (token) {
-    verify(
-      token,
-      process.env.KEY_TOKEN,
-      (err, decoded) =>
-        (auth = err && !!readUser({ name: decoded.name, password: decoded.password }))
-    )
-  }
+  const { token } = await req.json()
+  const decodedToken = Token.verify(token)
 
-  return NextResponse.json({ auth: auth })
+  return NextResponse.json({
+    auth:
+      !!decodedToken && !!User.read(decodedToken.name, decodedToken.password),
+  })
 }

@@ -1,22 +1,22 @@
-"use client";
+"use client"
 
-import { useRouter } from "next/navigation";
-import style from "./login.module.css";
-import InputForm from "@/app/components/style/input-form";
+import { useRouter } from "next/navigation"
+import style from "./login.module.css"
+import InputForm from "@/app/auth/components/input-form"
 
 export default function Login() {
-  const router = useRouter();
+  const router = useRouter()
 
   async function checkLogin(formData) {
-    const name = formData.get("name");
-    const password = formData.get("password");
-    console.log(name);
+    const name = formData.get("name")
+    const password = formData.get("password")
+    console.log(name)
 
     if (!name || !password) {
-      alert("por favor preencha todos os campos");
-      return;
+      alert("por favor preencha todos os campos")
+      return
     }
-    let auth = false;
+    let auth = false
 
     await fetch(`http://localhost:3000/api/auth/login`, {
       method: "POST",
@@ -29,15 +29,15 @@ export default function Login() {
       }),
     })
       .then(async (res) => {
-        auth = (await res.json()).auth;
+        auth = (await res.json()).auth
       })
       .catch((err) => {
-        console.log(err);
-        alert("[ERRO] não foi possivel acessar a api");
-      });
+        console.log(err)
+        alert("[ERRO] não foi possivel acessar a api")
+      })
 
-    if (auth) router.push(`/dashboard/${name}`);
-    else alert("Usuário ou senha incorretos");
+    if (auth) router.push(`/dashboard/${name}`)
+    else alert("Usuário ou senha incorretos")
   }
 
   return (
@@ -49,9 +49,8 @@ export default function Login() {
         <InputForm type="submit" value="Entrar" />
       </form>
       <footer className={style.footer}>
-        <a href="#">Recuperar senha</a> |{" "}
-        <a href="/auth/register">Cadastrar-se</a>
+        <a href="#">Recuperar senha</a> | <a href="/auth/register">Cadastrar-se</a>
       </footer>
     </>
-  );
+  )
 }
