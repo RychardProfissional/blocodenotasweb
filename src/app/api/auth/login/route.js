@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server"
-import User from "@/database/user"
-import Token from "@/database/token"
+import User from "@/classes/user"
+import Token from "@/classes/token"
+import { cookies } from "next/headers"
 
 export async function POST(req) {
   const { name = false, password = false } = await req.json()
   const auth =
     name && password && !!(await User.read({ name: name, password: password }))
 
-  auth && Token.create(name, password)
-
+  auth && (await Token.create(name, password))
+  console.log(cookies().getAll())
   return NextResponse.json({ auth: auth })
 }

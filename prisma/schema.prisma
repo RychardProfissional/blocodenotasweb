@@ -66,8 +66,8 @@ model RevokedToken{
   id        Int @id @default(autoincrement())
   createdAT DateTime @default(now())
 
-  token     String
-  revokedAT DateTime 
+  token     String @unique
+  revokedAT Int 
 
   @@map("revokedtokens")
 }

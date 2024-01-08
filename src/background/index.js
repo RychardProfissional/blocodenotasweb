@@ -1,4 +1,4 @@
-import prisma from "@/database/prisma"
+import prisma from "@/classes/prisma"
 
 const interval = process.env.REVOKED_TOKEN_CLEANUP_INTERVAL
 
