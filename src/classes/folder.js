@@ -1,28 +1,69 @@
 import prisma from "./prisma"
+import User from "./user"
 
-const Folder = {
-  async create(name) {
+export const Folder = {
+  async create(userid, name) {
     // deve conter uma imagens em versões posteriores
     try {
-      return await prisma.folder.create({ data: { name: name } })
+      console.log("------")
+      if (
+        !(await User.read({ id: userid })) ||
+        !!(await Folder.read("perUser", userid)?.filter(
+          (folder) => folder.name === name
+        ))
+      )
+        return false
+      const newFolder = await prisma.folder.create({ data: { name: name } })
+      console.log(newFolder)
+      User.folderIncrement(userid, newFolder.id)
+
+      return newFolder
     } catch (err) {
+      console.log(err.menssage)
       return null
     }
   },
 
-  async read(where) {
+  async read(type, where) {
     try {
-      return await prisma.folder.findUnique({
-        where: where,
-      })
+      switch (type) {
+        case "perUser":
+          if (!isNaN(where)) {
+            return (
+              await prisma.user.findFirst({
+                where: { id: where },
+                select: {
+                  folders: {
+                    select: {
+                      folder: {
+                        select: {
+                          name: true,
+                          id: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              })
+            )?.folders.map((userToFolder) => userToFolder.folder)
+          }
+          break
+        case "perId":
+          if (!isNaN(where)) {
+            return await prisma.folder.findFirst({ where: { id: where } })
+          }
+          break
+      }
     } catch (err) {
-      return false
+      console.log(err.menssage)
+      return null
     }
+    return null
   },
 
-  async update(where, data) {
+  async update(userid, data) {
     try {
-      return await prisma.folder.update({ where: where, data: data })
+      return await prisma.folder.update({ where: { userid }, data: data })
     } catch (err) {
       return null
     }
@@ -36,3 +77,5 @@ const Folder = {
     }
   },
 }
+
+export default Folder

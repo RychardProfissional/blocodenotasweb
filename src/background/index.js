@@ -3,7 +3,7 @@ import prisma from "@/classes/prisma"
 const interval = process.env.REVOKED_TOKEN_CLEANUP_INTERVAL
 
 function deleteExpirationTokens() {
-  prisma.revokedtoken.deleteMany({
+  prisma.revokedToken.deleteMany({
     where: {
       revokedAT: {
         lt: Date.now(),

@@ -3,8 +3,8 @@ import { NextResponse } from "next/server"
 import Token from "@/classes/token"
 
 export async function POST(req) {
-  const res = await req.json()
-  const decodedToken = await Token.verify(res.token)
+  const { token } = await req.json()
+  const decodedToken = await Token.verify(token)
 
   return NextResponse.json({
     auth:

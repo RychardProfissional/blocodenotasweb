@@ -20,8 +20,14 @@ export const Note = {
     }
   },
 
-  async update(id) {
+  async update(data, id, folderid) {
     try {
+      if (folderid) {
+        return await prisma.note.updateMany({
+          where: { folderid: folderid },
+          data: data,
+        })
+      }
       return await prisma.note.update({ where: { id: id }, data: data })
     } catch (err) {
       return null

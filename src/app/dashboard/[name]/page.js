@@ -1,11 +1,11 @@
-"use server";
+"use server"
 
-import { cookies } from "next/headers";
-import { Logged } from "./logged";
-import NoLogged from "./nologged";
+import { cookies } from "next/headers"
+import { Logged } from "./logged"
+import NoLogged from "./nologged"
 
 export default async function Page({ params }) {
-  const urlName = params.name;
+  const urlName = params.name
   // const token = cookies().get("TOKEN");
 
   // let login = false;
@@ -19,12 +19,12 @@ export default async function Page({ params }) {
   //     body: JSON.stringify(token),
   //   })
   //     .then(async (res) => {
-  //       login = (await res.json()).ok;
+  //       login = (await res.json()).auth;
 
   //       !login && cookies.delete("TOKEN");
   //     })
   //     .catch((err) => console.log(err));
   // }
 
-  return true ? <Logged /> : <NoLogged name={urlName} />;
+  return true ? <Logged /> : <NoLogged name={urlName} />
 }

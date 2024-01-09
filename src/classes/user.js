@@ -33,6 +33,17 @@ export const User = {
     }
   },
 
+  async folderIncrement(userId, folderId) {
+    try {
+      return await prisma.userToFolder.create({
+        data: { userid: userId, folderid: folderId },
+      })
+    } catch (err) {
+      console.log(err.menssage)
+      return null
+    }
+  },
+
   async delete(id) {
     try {
       return await prisma.user.delete({ where: { id: id } })
