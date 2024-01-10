@@ -17,18 +17,42 @@ export const User = {
     }
   },
 
-  async read(where) {
+  async read({id, name, password}) {
     try {
-      return await prisma.user.findUnique({ where: where })
+      if (id){
+        return await prisma.user.findUnique({ where: {id: id} })
+      }
+
+      if (name && password){
+        console.log(await prisma.user.findMany())
+        return await prisma.user.findFirst({ where: {name: name, password: password} })
+      }
     } catch (err) {
       return null
     }
+    return null
   },
 
   async update(id, data) {
     try {
       return await prisma.user.update({ where: { id: id }, data: data })
     } catch (error) {
+      return null
+    }
+  },
+
+  async folderIncrement(id, folderId){
+    if (!id || !folderId) return null
+
+    try {
+      return prisma.userToFolder.create({
+        data: {
+          userid: id,
+          folderid: folderId,
+        }
+      })
+    } catch (err) {
+      console.log(err)
       return null
     }
   },

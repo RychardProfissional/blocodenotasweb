@@ -5,8 +5,10 @@ import request from "supertest"
 const server = process.env.NEXT_PUBLIC_VERCEL_URL
 const apiRoute = "/api/auth/login"
 
+let user
+
 beforeAll(async () => {
-  await User.create("testeName", "senha")
+  user = await User.create("testeName", "senha")
 })
 
 afterAll(async () => {
@@ -15,6 +17,7 @@ afterAll(async () => {
 
 describe("Login de usuário", () => {
   it("Correto", async () => {
+    console.log(user)
     const res = await request(server)
       .post(apiRoute)
       .send({ name: "testeName", password: "senha" })

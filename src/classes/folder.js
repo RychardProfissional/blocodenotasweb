@@ -1,29 +1,68 @@
 import prisma from "./prisma"
+import User from "./user"
 
-const Folder = {
-  async create(name) {
+export const Folder = {
+  async create(name, userId) {
     // deve conter uma imagens em versões posteriores
     try {
-      return await prisma.folder.create({ data: { name: name } })
+      if (!User.read(userId) || !(await this.read("perUser", userId))?.filter(folder => folder.name === name )) return null
+      const newFolder = await prisma.folder.create({data: { name: name }})
+
+      await User.folderIncrement(userId, newFolder.id)
+
+      return newFolder 
     } catch (err) {
+      console.log(err)
       return null
     }
   },
 
-  async read(where) {
+  async read(type, where) {
     try {
-      return await prisma.folder.findUnique({
-        where: where,
-      })
+      switch(type){
+        case "perUser":
+          if (isNaN(where)) return null
+          return (await prisma.userToFolder.findMany({
+            where: { userid: where },
+            include: {
+              folder: {
+                select: {
+                  name: true,
+                  id: true,
+                }
+              }
+            }
+          }))?.map(userToFolder => userToFolder.folder)
+        
+        case "perId":
+          if (isNaN(where)) return null
+          return await prisma.folder.findFirst({
+            where: {id: where}
+          })
+        
+        case "perName": 
+          if (typeof type !== 'string') return null
+          return await prisma.folder.findMany({
+            where: {
+              name: {
+                startsWith: where
+              }
+            } 
+          })
+
+      }
     } catch (err) {
-      return false
+      console.log(err)
+      return null
     }
+    return null
   },
 
-  async update(where, data) {
+  async update(id, newName) {
     try {
-      return await prisma.folder.update({ where: where, data: data })
+      return await prisma.folder.update({ where: {id: id}, data: {name: newName} })
     } catch (err) {
+      console.log(err)
       return null
     }
   },
@@ -36,3 +75,5 @@ const Folder = {
     }
   },
 }
+
+export default Folder
