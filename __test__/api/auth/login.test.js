@@ -17,7 +17,6 @@ afterAll(async () => {
 
 describe("Login de usuário", () => {
   it("Correto", async () => {
-    console.log(user)
     const res = await request(server)
       .post(apiRoute)
       .send({ name: "testeName", password: "senha" })

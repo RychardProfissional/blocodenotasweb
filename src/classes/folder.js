@@ -69,8 +69,15 @@ export const Folder = {
 
   async delete(id) {
     try {
-      return await prisma.folder.delete({ id: id })
+      await prisma.userToFolder.deleteMany({
+        where: {folderid: id}
+      })
+
+      return await prisma.folder.delete({
+        where: { id: id }
+      })
     } catch (err) {
+      console.log(err.menssage)
       return null
     }
   },

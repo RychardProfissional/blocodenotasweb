@@ -10,6 +10,5 @@ export async function POST(req) {
     name && password && !!(await User.read({ name: name, password: password }))
 
   auth && (await Token.create(name, password))
-  console.log(cookies().getAll())
   return NextResponse.json({ auth: auth })
 }

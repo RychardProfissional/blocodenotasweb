@@ -12,7 +12,8 @@ export const User = {
           password: password,
         },
       })
-    } catch (error) {
+    } catch (err) {
+      console.log(err)
       return null
     }
   },
@@ -24,7 +25,6 @@ export const User = {
       }
 
       if (name && password){
-        console.log(await prisma.user.findMany())
         return await prisma.user.findFirst({ where: {name: name, password: password} })
       }
     } catch (err) {
