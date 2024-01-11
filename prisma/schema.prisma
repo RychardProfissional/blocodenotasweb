@@ -57,7 +57,7 @@ model Note {
 
   folderid    Int 
 
-  folder      Folder @relation(fields: [folderid], references: [id])
+  folder      Folder @relation(fields: [folderid], references: [id], onDelete: Cascade)
 
   @@map("notes")
 }

@@ -1,19 +1,20 @@
-import Folder from "@/classes/folder"
-import { NextResponse } from "next/server"
+import Folder from "@/classes/folder";
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
-  const { userId, id } = await req.json()
+    const {folderId, userId, name} = await req.json()
 
-  if (id) {
-    const folder = await Folder.read("perId", id)
+    if(folderId) {
+        return NextResponse.json({result: await Folder.read('perId', folderId)})
+    }
 
-    if (folder) return NextResponse.json({ result: folder })
-  }
+    if(userId){
+        return NextResponse.json({result: await Folder.read('perUser', userId)})
+    }
 
-  if (userId) {
-    const folders = await Folder.read("perUser", userId)
+    if(name){
+        return NextResponse.json({result: await Folder.read('perName', name)})
+    }
 
-    if (folders) return NextResponse.json({ result: folders })
-  }
-  return NextResponse.json({ result: null })
+    return NextResponse.json({result: null})
 }

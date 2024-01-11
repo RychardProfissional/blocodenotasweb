@@ -2,77 +2,82 @@ import prisma from "./prisma"
 import User from "./user"
 
 export const Folder = {
-  async create(userid, name) {
+  async create(name, userId) {
     // deve conter uma imagens em versões posteriores
     try {
-      console.log("------")
-      if (
-        !(await User.read({ id: userid })) ||
-        !!(await Folder.read("perUser", userid)?.filter(
-          (folder) => folder.name === name
-        ))
-      )
-        return false
-      const newFolder = await prisma.folder.create({ data: { name: name } })
-      console.log(newFolder)
-      User.folderIncrement(userid, newFolder.id)
+      if (!User.read(userId) || !(await this.read("perUser", userId))?.filter(folder => folder.name === name )) return null
+      const newFolder = await prisma.folder.create({data: { name: name }})
 
-      return newFolder
+      await User.folderIncrement(userId, newFolder.id)
+
+      return newFolder 
     } catch (err) {
-      console.log(err.menssage)
+      console.log(err)
       return null
     }
   },
 
   async read(type, where) {
     try {
-      switch (type) {
+      switch(type){
         case "perUser":
-          if (!isNaN(where)) {
-            return (
-              await prisma.user.findFirst({
-                where: { id: where },
+          if (isNaN(where)) return null
+          return (await prisma.userToFolder.findMany({
+            where: { userid: where },
+            include: {
+              folder: {
                 select: {
-                  folders: {
-                    select: {
-                      folder: {
-                        select: {
-                          name: true,
-                          id: true,
-                        },
-                      },
-                    },
-                  },
-                },
-              })
-            )?.folders.map((userToFolder) => userToFolder.folder)
-          }
-          break
+                  name: true,
+                  id: true,
+                }
+              }
+            }
+          }))?.map(userToFolder => userToFolder.folder)
+        
         case "perId":
-          if (!isNaN(where)) {
-            return await prisma.folder.findFirst({ where: { id: where } })
-          }
-          break
+          if (isNaN(where)) return null
+          return await prisma.folder.findFirst({
+            where: {id: where}
+          })
+        
+        case "perName": 
+          if (typeof type !== 'string') return null
+          return await prisma.folder.findMany({
+            where: {
+              name: {
+                startsWith: where
+              }
+            } 
+          })
+
       }
     } catch (err) {
-      console.log(err.menssage)
+      console.log(err)
       return null
     }
     return null
   },
 
-  async update(userid, data) {
+  async update(id, newName) {
     try {
-      return await prisma.folder.update({ where: { userid }, data: data })
+      return await prisma.folder.update({ where: {id: id}, data: {name: newName} })
     } catch (err) {
+      console.log(err)
       return null
     }
   },
 
   async delete(id) {
     try {
-      return await prisma.folder.delete({ id: id })
+      await prisma.userToFolder.deleteMany({
+        where: {folderid: id}
+      })
+
+      return await prisma.folder.delete({
+        where: { id: id }
+      })
     } catch (err) {
+      console.log(err.menssage)
       return null
     }
   },

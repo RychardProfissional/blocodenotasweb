@@ -1,43 +1,51 @@
-import Folder from "@/classes/folder"
-import prisma from "@/classes/prisma"
-import User from "@/classes/user"
-import request from "supertest"
+import Folder from '@/classes/folder'
+import prisma from '@/classes/prisma'
+import User from '@/classes/user'
+import request from 'supertest'
 
-const server = "localhost:3000"
-const apiRoute = "/api/dashboard/folder/read"
+const server = process.env.NEXT_PUBLIC_VERCEL_URL
+const apiRoute = '/api/dashboard/folder/read'
 let user, folder
 
 beforeAll(async () => {
-  user = await User.create("testeUser", "senha")
-  await Folder.create(user.id, "testeFolder")
-  folder = await Folder.create(user.id, "outroTeste")
+    user = await User.create('nome', 'senha')
+    folder = await Folder.create('FolderName', user.id)
+    await Folder.create('Folder', user.id)
 })
 
 afterAll(async () => {
-  await prisma.userToFolder.deleteMany()
-  await prisma.user.deleteMany()
-  await prisma.folder.deleteMany()
+    await prisma.userToFolder.deleteMany()
+    await prisma.folder.deleteMany()
+    await prisma.user.deleteMany()
 })
 
-describe("Seleção de pastas", () => {
-  it("Correto - por usuário", async () => {
-    const res = await request(server).post(apiRoute).send({ userId: user.id })
+describe('Leitura de pastas', () => {
+    it('Correto - por id de usuário', async () => {
+        const res = await request(server).post(apiRoute).send({userId: user.id})
+        
+        expect(res.status).toBe(200)
+        expect(res.body.result[0].name).toBe('FolderName')
+    })
 
-    expect(res.status).toBe(200)
-    expect(res.body.result[0].name).toBe("testeFolder")
-  })
+    it('Correto - por nome da pasta', async () => {
+        const res = await request(server).post(apiRoute).send({name: 'Folder'})
+        
+        expect(res.status).toBe(200)
+        expect(res.body.result[0].name).toBe('FolderName')
+        expect(res.body.result[1].name).toBe('Folder')
+    })
 
-  it("Correto - por id", async () => {
-    const res = await request(server).post(apiRoute).send({ id: folder.id })
+    it('Correto - por id da pasta', async () => {
+        const res = await request(server).post(apiRoute).send({folderId: folder.id})
 
-    expect(res.status).toBe(200)
-    expect(res.body.result.name).toBe("outroTeste")
-  })
+        expect(res.status).toBe(200)
+        expect(res.body.result.name).toBe('FolderName')
+    })
 
-  it("Errado - sem passar valores", async () => {
-    const res = await request(server).post(apiRoute).send({})
+    it('Errado - sem parametros', async () => {
+        const res = await request(server).post(apiRoute).send({})
 
-    expect(res.status).toBe(200)
-    expect(res.body.result).toBe(null)
-  })
+        expect(res.status).toBe(200)
+        expect(res.body.result).toBe(null)
+    })
 })

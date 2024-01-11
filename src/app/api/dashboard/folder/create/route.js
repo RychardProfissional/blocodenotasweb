@@ -2,15 +2,9 @@ import Folder from "@/classes/folder"
 import { NextResponse } from "next/server"
 
 export async function POST(req) {
-  const { userId, name } = await req.json()
+    const {name, userId} = await req.json()
+    
+    if (!name || !userId) return NextResponse.json({result: null})
 
-  if (userId && name) {
-    const folder = await Folder.create(userId, name)
-    console.log(folder)
-    return NextResponse.json({
-      folder: folder,
-    })
-  }
-
-  return NextResponse.json({ folder: null })
+    return NextResponse.json({result: await Folder.create(name, userId)})
 }
