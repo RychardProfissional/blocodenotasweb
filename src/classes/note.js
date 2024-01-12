@@ -1,47 +1,61 @@
 import prisma from "./prisma"
 
 export const Note = {
-  async create(data) {
+  async create(folderid, title, text = '') {
     try {
-      return await prisma.note.create({ data: data })
-    } catch (err) {
-      return null
-    }
-  },
-
-  async read(id, folderid) {
-    try {
-      if (folderid) {
-        return await prisma.note.findMany({ where: { folderid: folderid } })
-      }
-      return await prisma.note.findUnique({ where: { id: id } })
-    } catch (err) {
-      return false
-    }
-  },
-
-  async update(data, id, folderid) {
-    try {
-      if (folderid) {
-        return await prisma.note.updateMany({
-          where: { folderid: folderid },
-          data: data,
+      if (folderid && title) {
+        return await prisma.note.create({
+          data: {
+            folderid,
+            title,
+            text,
+          }
         })
       }
-      return await prisma.note.update({ where: { id: id }, data: data })
     } catch (err) {
+      console.log(err)
       return null
     }
+    return null
   },
 
-  async delete(id, folderid) {
+  async read({id, folderid}) {
     try {
-      if (folderid) {
-        return await prisma.note.deleteMany({ where: { folderid: folderid } })
+      if (id) return await prisma.note.findUnique({ where: { id } })
+      
+      if (folderid) return await prisma.note.findMany({
+        where: { folderid }, 
+        select: {id: true, title: true, text: true}
+      })
+    } catch (err) {
+      console.log(err)
+      return null
+    }
+    return null
+  },
+  
+  async update(id, {folderid, title, text}) {
+    try {
+      if (folderid || title || text){
+        return await prisma.note.update({
+          where: { id },
+          data: {folderid, title, text},
+        })
       }
-      return await prisma.note.delete({ where: { id: id } })
+    } catch (err) {
+      console.log(err)
+      return null
+    }
+    return null
+  },
+
+  async delete(id) {
+    try {
+      return await prisma.note.delete({ where: { id } })
     } catch (err) {
       return null
     }
   },
 }
+
+export default Note

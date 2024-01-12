@@ -8,66 +8,63 @@ datasource db {
 }
 
 model User {
-  id        Int @id @default(autoincrement())
-  createdAT DateTime @default(now())
-  updatedAT DateTime @updatedAt
+  id        Int            @id @default(autoincrement())
+  createdAT DateTime       @default(now())
+  updatedAT DateTime       @updatedAt
 
-  name      String @unique
+  name      String         @unique
   email     String?
   password  String
-  active    Boolean @default(true)
-  
+  active    Boolean        @default(true)
+
   folders   UserToFolder[]
+
   @@map("users")
 }
 
-model UserToFolder{
-  userid    Int
-  folderid  Int
+model UserToFolder {
+  userid   Int
+  folderid Int
 
-  user      User @relation(fields: [userid], references: [id])
-  folder    Folder @relation(fields: [folderid], references: [id])
+  folder   Folder @relation(fields: [folderid], references: [id], onDelete: Cascade)
+  user     User   @relation(fields: [userid], references: [id], onDelete: Cascade)
 
   @@id([userid, folderid])
   @@map("userstofolders")
 }
 
-model Folder{
-  id          Int @id @default(autoincrement())
-  createdAT   DateTime @default(now())
-  updatedAT   DateTime @updatedAt
+model Folder {
+  id        Int            @id @default(autoincrement())
+  createdAT DateTime       @default(now())
+  updatedAT DateTime       @updatedAt
 
-  name        String
-  active      Boolean @default(true)
-
-  users       UserToFolder[]
-  notes       Note[]
+  name      String
+  notes     Note[]
+  users     UserToFolder[]
 
   @@map("folders")
 }
 
 model Note {
-  id          Int @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   createdAT   DateTime @default(now())
   updatedAT   DateTime @updatedAt
 
   title       String
-  information String
-  active      Boolean @default(true)
-
-  folderid    Int 
-
-  folder      Folder @relation(fields: [folderid], references: [id], onDelete: Cascade)
+  text        String
+  folderid    Int
+  
+  folder      Folder   @relation(fields: [folderid], references: [id], onDelete: Cascade)
 
   @@map("notes")
 }
 
-model RevokedToken{
-  id        Int @id @default(autoincrement())
+model RevokedToken {
+  id        Int      @id @default(autoincrement())
   createdAT DateTime @default(now())
 
-  token     String @unique
-  revokedAT Int 
+  token     String   @unique
+  revokedAT Int
 
   @@map("revokedtokens")
 }

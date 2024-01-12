@@ -6,7 +6,8 @@ export const Folder = {
     // deve conter uma imagens em versões posteriores
     try {
       if (!User.read(userId) || !(await this.read("perUser", userId))?.filter(folder => folder.name === name )) return null
-      const newFolder = await prisma.folder.create({data: { name: name }})
+      
+      const newFolder = await prisma.folder.create({data: { name }})
 
       await User.folderIncrement(userId, newFolder.id)
 
@@ -60,7 +61,7 @@ export const Folder = {
 
   async update(id, newName) {
     try {
-      return await prisma.folder.update({ where: {id: id}, data: {name: newName} })
+      return await prisma.folder.update({ where: {id}, data: {name: newName} })
     } catch (err) {
       console.log(err)
       return null
@@ -68,16 +69,13 @@ export const Folder = {
   },
 
   async delete(id) {
+    console.log(id)
     try {
-      await prisma.userToFolder.deleteMany({
-        where: {folderid: id}
-      })
-
       return await prisma.folder.delete({
-        where: { id: id }
+        where: { id }
       })
     } catch (err) {
-      console.log(err.menssage)
+      console.log(err)
       return null
     }
   },

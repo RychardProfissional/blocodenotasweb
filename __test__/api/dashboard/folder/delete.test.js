@@ -20,8 +20,8 @@ afterAll(async () => {
 
 describe('Deletando pastas', () => {
     it('Correto', async () => {
-        const res = await request(server).post(apiRoute).send({folderId: folder.id})
-
+        const res = await request(server).post(apiRoute).send({id: folder.id})
+        
         expect(res.status).toBe(200)
         expect(res.body.result.name).toBe('folderName')
         expect(await Folder.read('perId', folder.id)).toBe(null)
