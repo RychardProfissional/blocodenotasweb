@@ -1,7 +1,7 @@
 import prisma from "./prisma"
 
 export const Note = {
-  async create(folderid, title, text = '') {
+  async CREATE({ folderid, title, text = "" }) {
     try {
       if (folderid && title) {
         return await prisma.note.create({
@@ -9,7 +9,7 @@ export const Note = {
             folderid,
             title,
             text,
-          }
+          },
         })
       }
     } catch (err) {
@@ -19,27 +19,28 @@ export const Note = {
     return null
   },
 
-  async read({id, folderid}) {
+  async READ({ id, folderid }) {
     try {
       if (id) return await prisma.note.findUnique({ where: { id } })
-      
-      if (folderid) return await prisma.note.findMany({
-        where: { folderid }, 
-        select: {id: true, title: true, text: true}
-      })
+
+      if (folderid)
+        return await prisma.note.findMany({
+          where: { folderid },
+          select: { id: true, title: true, text: true },
+        })
     } catch (err) {
       console.log(err)
       return null
     }
     return null
   },
-  
-  async update(id, {folderid, title, text}) {
+
+  async UPDATE({ id, folderid, title, text }) {
     try {
-      if (folderid || title || text){
+      if (id && (folderid || title || text)) {
         return await prisma.note.update({
           where: { id },
-          data: {folderid, title, text},
+          data: { folderid, title, text },
         })
       }
     } catch (err) {
@@ -49,7 +50,7 @@ export const Note = {
     return null
   },
 
-  async delete(id) {
+  async DELETE({ id }) {
     try {
       return await prisma.note.delete({ where: { id } })
     } catch (err) {

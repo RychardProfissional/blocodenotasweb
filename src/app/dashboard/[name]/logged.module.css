@@ -47,11 +47,45 @@
 .menu {
   display: flex;
   flex-direction: column;
-  align-items: center;
 
   width: 300px;
+  min-height: 100%;
   background-color: rgb(var(--color-black-5));
   color: rgb(var(--color-white-1));
+}
+
+.menu_header {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu_home {
+  display: flex;
+  background-color: rgb(var(--color-strong-3));
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 5px;
+  font-size: 1.5em;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.menu_home:hover {
+  color: rgb(var(--color-white-1));
+  background-color: rgb(var(--color-strong-5));
+  text-shadow: 0 0 2px rgb(var(--color-white-1), 0.5);
+}
+
+.menu_home div {
+  margin-left: 10px;
+}
+
+.menu_body {
+  flex-grow: 2;
+}
+
+.menu_footer {
+  height: 7%;
 }
 
 .create_note {

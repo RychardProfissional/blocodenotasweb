@@ -3,10 +3,11 @@
 import DropDown from "@/app/components/functionalities/dropdown"
 import Modal from "@/app/components/functionalities/modal"
 import { BsPersonCircle } from "react-icons/bs"
+import { Search } from "../components/search"
+import { BiSolidHome, BiSearchAlt2 } from "react-icons/bi"
+import Folder from "../components/folder"
 import style from "./logged.module.css"
 import Note from "../components/note"
-import Folder from "../components/folder"
-import { Search } from "../components/search"
 
 export function Logged() {
   return (
@@ -24,11 +25,22 @@ export function Logged() {
       </header>
       <main className={style.main}>
         <section className={style.menu}>
-          <div>
-            <div>
-              <div>home</div>
-              <Search listItens={{}} />
+          <div className={style.menu_header}>
+            <div className={style.menu_home}>
+              <BiSolidHome />
+              <div>HOME</div>
             </div>
+            <Search
+              listItens={{}}
+              label={
+                <div>
+                  <BiSearchAlt2 />
+                </div>
+              }
+              placeholder="pesquisar"
+            />
+          </div>
+          <div className={style.menu_body}>
             <h3>Suas pastas</h3>
             <DropDown DropElement={<div>+</div>}>
               <Modal
@@ -50,8 +62,6 @@ export function Logged() {
                 <textarea className={style.create_nota_textarea} />
               </Modal>
             </DropDown>
-          </div>
-          <div>
             {/* repetir até não ter mais pastas */}
             {/* ------------- read folder */}
 
@@ -70,7 +80,7 @@ export function Logged() {
               onClick={() => console.log("folder")}
             />
           </div>
-          <div>
+          <div className={style.menu_footer}>
             quer ver o codigo deste site? acesse meu <a href="#">github</a>
           </div>
         </section>

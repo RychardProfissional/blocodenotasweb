@@ -1,12 +1,19 @@
-import styled from "styled-components"
 import { Input } from "@/app/components/style/input"
 import DropDown from "@/app/components/functionalities/dropdown"
 
-export function Search({ listItens }) {
+export function Search({ listItens, label, ...rest }) {
   return (
     <DropDown
       eventDrop="onFocus"
-      DropElement={<Input type="text" label="pesquisar" />}
+      DropElement={
+        <Input
+          type="text"
+          label={label}
+          {...rest}
+          style={{ padding: "10px 10px" }}
+          labelClassName={{ top: "1000%" }}
+        />
+      }
     >
       <div>itens</div>
 

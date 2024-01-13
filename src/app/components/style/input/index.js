@@ -1,6 +1,12 @@
 import styled from "styled-components"
 
-export function Input({ label, className, inputClassName, labelClassName, ...rest }) {
+export function Input({
+  label,
+  className,
+  inputClassName,
+  labelClassName,
+  ...rest
+}) {
   return (
     <Container className={className}>
       <InputStyle className={inputClassName} {...rest} />
@@ -10,9 +16,21 @@ export function Input({ label, className, inputClassName, labelClassName, ...res
 }
 
 const Container = styled.div`
-  color: white;
+  position: relative;
+  background-color: red;
+  z-index: 1;
 `
 const InputStyle = styled.input`
-  color: white;
+  width: 100%;
+  height: 100%;
+  opacity: 90%;
 `
-const Label = styled.span``
+const Label = styled.span`
+  position: absolute;
+  pointer-events: none;
+  left: 4%;
+  top: 15%;
+  opacity: 70%;
+`
+
+export default Input
