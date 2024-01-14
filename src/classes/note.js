@@ -1,7 +1,7 @@
 import prisma from "./prisma"
 
 export const Note = {
-  async CREATE({ folderid, title, text = "" }) {
+  async create({ folderid, title, text = "" }) {
     try {
       if (folderid && title) {
         return await prisma.note.create({
@@ -19,7 +19,7 @@ export const Note = {
     return null
   },
 
-  async READ({ id, folderid }) {
+  async read({ id, folderid }) {
     try {
       if (id) return await prisma.note.findUnique({ where: { id } })
 
@@ -35,7 +35,7 @@ export const Note = {
     return null
   },
 
-  async UPDATE({ id, folderid, title, text }) {
+  async update({ id, folderid, title, text }) {
     try {
       if (id && (folderid || title || text)) {
         return await prisma.note.update({
@@ -50,7 +50,7 @@ export const Note = {
     return null
   },
 
-  async DELETE({ id }) {
+  async delete({ id }) {
     try {
       return await prisma.note.delete({ where: { id } })
     } catch (err) {

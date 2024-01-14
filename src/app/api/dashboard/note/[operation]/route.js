@@ -2,7 +2,8 @@ import Note from "@/classes/note"
 import { NextResponse } from "next/server"
 
 export async function POST(req) {
-  const { operation, data } = await req.json()
+  const data = await req.json()
+  const operation = /\/([a-zA-Z]+)$/.exec(await req.url)[1].toLowerCase()
 
   try {
     return NextResponse.json({ result: await Note[operation](data) })

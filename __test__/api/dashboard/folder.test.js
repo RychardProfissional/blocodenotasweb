@@ -4,18 +4,13 @@ import User from "@/classes/user"
 import request from "supertest"
 
 const server = process.env.NEXT_PUBLIC_VERCEL_URL
-const apiRoute = "/api/dashboard/folder"
-
-const CREATE = new URLSearchParams({ operation: "CREATE" })
-const READ = new URLSearchParams({ operation: "READ" })
-const UPDATE = new URLSearchParams({ operation: "UPDATE" })
-const DELETE = new URLSearchParams({ operation: "DELETE" })
+const apiRoute = "/api/dashboard/folder/"
 
 let user, folder
 
 beforeAll(async () => {
   user = await User.create("nome", "senha")
-  folder = await Folder.CREATE({ name: "FolderName", userid: user.id })
+  folder = await Folder.create({ name: "FolderName", userid: user.id })
 })
 
 afterAll(async () => {
@@ -27,8 +22,8 @@ afterAll(async () => {
 describe("Criacao de pastas", () => {
   it("Correto", async () => {
     const res = await request(server)
-      .post(`${apiRoute}?${CREATE}`)
-      .send({ operation: "CREATE", data: { name: "Folder", userid: user.id } })
+      .post(`${apiRoute}CREATE`)
+      .send({ name: "Folder", userid: user.id })
 
     expect(res.status).toBe(200)
     expect(await res.body.result.name).toBe("teste")
@@ -38,8 +33,8 @@ describe("Criacao de pastas", () => {
 describe("Leitura de pastas", () => {
   it("Correto - por id de usuário", async () => {
     const res = await request(server)
-      .post(`${apiRoute}?${READ}`)
-      .send({ operation: "READ", data: { userid: user.id } })
+      .post(`${apiRoute}READ`)
+      .send({ userid: user.id })
 
     expect(res.status).toBe(200)
     expect(res.body.result[0].name).toBe("FolderName")
@@ -47,8 +42,8 @@ describe("Leitura de pastas", () => {
 
   it("Correto - por nome da pasta", async () => {
     const res = await request(server)
-      .post(`${apiRoute}?${READ}`)
-      .send({ operation: "READ", data: { name: "Folder" } })
+      .post(`${apiRoute}READ`)
+      .send({ name: "Folder" })
 
     expect(res.status).toBe(200)
     expect(res.body.result[0].name).toBe("FolderName")
@@ -57,8 +52,8 @@ describe("Leitura de pastas", () => {
 
   it("Correto - por id da pasta", async () => {
     const res = await request(server)
-      .post(`${apiRoute}?${READ}`)
-      .send({ operation: "READ", data: { id: folder.id } })
+      .post(`${apiRoute}READ`)
+      .send({ id: folder.id })
 
     expect(res.status).toBe(200)
     expect(res.body.result.name).toBe("FolderName")
@@ -68,11 +63,8 @@ describe("Leitura de pastas", () => {
 describe("Atualizacao de pastas", () => {
   it("Correto", async () => {
     const res = await request(server)
-      .post(`${apiRoute}?${UPDATE}`)
-      .send({
-        operation: "UPDATE",
-        data: { id: folder.id, name: "New Name Folder" },
-      })
+      .post(`${apiRoute}UPDATE`)
+      .send({ id: folder.id, name: "New Name Folder" })
 
     expect(res.status).toBe(200)
     expect(res.body.result.name).toBe("New Name Folder")
@@ -82,8 +74,8 @@ describe("Atualizacao de pastas", () => {
 describe("Deletando pastas", () => {
   it("Correto", async () => {
     const res = await request(server)
-      .post(`${apiRoute}?${DELETE}`)
-      .send({ operation: "DELETE", data: { id: folder.id } })
+      .post(`${apiRoute}DELETE`)
+      .send({ id: folder.id })
 
     expect(res.status).toBe(200)
     expect(res.body.result.name).toBe("folderName")

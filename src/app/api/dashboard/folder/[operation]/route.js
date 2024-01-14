@@ -3,7 +3,10 @@ import { NextResponse } from "next/server"
 
 export async function POST(req) {
   const data = await req.json()
-  const operation = await req.get
+
+  // Achar forma correta de pegar parametro de rota dinamica
+  const operation = /\/([a-zA-Z]+)$/.exec(await req.url)[1].toLowerCase()
+
   try {
     return NextResponse.json({ result: await Folder[operation](data) })
   } catch (err) {

@@ -2,7 +2,7 @@ import prisma from "./prisma"
 import User from "./user"
 
 export const Folder = {
-  async CREATE({ name, userid }) {
+  async create({ name, userid }) {
     // deve conter uma imagens em versões posteriores
     try {
       if (
@@ -24,7 +24,7 @@ export const Folder = {
     }
   },
 
-  async READ({ id, userid, name }) {
+  async read({ id, userid, name }) {
     try {
       if (id) {
         return await prisma.folder.findFirst({ where: { id } })
@@ -62,7 +62,7 @@ export const Folder = {
     return null
   },
 
-  async UPDATE({ id, name }) {
+  async update({ id, name }) {
     try {
       if (name)
         return await prisma.folder.update({
@@ -76,7 +76,7 @@ export const Folder = {
     return null
   },
 
-  async DELETE({ id }) {
+  async delete({ id }) {
     try {
       return await prisma.folder.delete({
         where: { id },
