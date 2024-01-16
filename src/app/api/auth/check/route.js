@@ -4,14 +4,12 @@ import Token from "@/classes/token"
 
 export async function POST(req) {
   const { token } = await req.json()
-  const { name, password }  = await Token.verify(token)
+  const { name, password } = await Token.verify(token)
 
   return NextResponse.json({
-    auth:
-      !!name && !!password &&
-      !!(await User.read({
-        name: name,
-        password: password,
-      })),
+    user: await User.read({
+      name: name,
+      password: password,
+    }),
   })
 }

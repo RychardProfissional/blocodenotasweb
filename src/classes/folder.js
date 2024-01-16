@@ -37,8 +37,9 @@ export const Folder = {
             include: {
               folder: {
                 select: {
-                  name: true,
                   id: true,
+                  name: true,
+                  notes: true,
                 },
               },
             },

@@ -8,7 +8,7 @@ export default async function Page({ params }) {
   const urlName = params.name
   // const token = cookies().get("TOKEN");
 
-  // let login = false;
+  // let user = false;
 
   // if (token) {
   //   await fetch("http://localhost:3000/api/auth/check", {
@@ -19,12 +19,13 @@ export default async function Page({ params }) {
   //     body: JSON.stringify(token),
   //   })
   //     .then(async (res) => {
-  //       login = (await res.json()).auth;
+  //       user = (await res.json()).user;
 
-  //       !login && cookies.delete("TOKEN");
+  //       !user && cookies.delete("TOKEN");
   //     })
   //     .catch((err) => console.log(err));
   // }
 
-  return true ? <Logged /> : <NoLogged name={urlName} />
+  // !user                  user.id
+  return true ? <Logged userid={1} /> : <NoLogged name={urlName} />
 }

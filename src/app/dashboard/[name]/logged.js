@@ -8,8 +8,128 @@ import { BiSolidHome, BiSearchAlt2 } from "react-icons/bi"
 import Folder from "../components/folder"
 import style from "./logged.module.css"
 import Note from "../components/note"
+import { useState } from "react"
 
-export function Logged() {
+export function Logged({ userid, username }) {
+  const [folders, setFolders] = useState([{}]) // retorno do folderAction.read
+  const [activeFolder, setActiveFolder] = useState(undefined) // id do folder ativo, caso seja undefined é igual ao home
+
+  const baseFetch = async (path, data) => {
+    return await fetch(`${process.env.API_ROUTE}${path}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+  }
+
+  const folderActions = {
+    create(name) {
+      const newFolders = folders
+      const promise = baseFetch("/dashboard/folder/CREATE", { userid, name })
+
+      setFolders([
+        ...newFolders,
+        { id: undefined, name: name, notes: undefined },
+      ]) // fazer preview com base no id undefined
+
+      promise
+        .then((res) => res.json())
+        .then((res) =>
+          setFolders([
+            ...newFolders,
+            { id: res.id, name: res.name, notes: res.notes },
+          ])
+        )
+    },
+
+    read() {
+      baseFetch("/dashboard/folder/READ", { userid })
+        .then((res) => res.json())
+        .then((res) => setFolders(res))
+    },
+
+    update(id, name) {
+      const newFolders = folders
+      const i = newFolders.findIndex((e) => e.id === id)
+
+      if (i == -1) return
+
+      newFolders[i].name = name
+      baseFetch("/dashboard/folder/UPDATE", { id, name })
+      setFolders(newFolders)
+    },
+
+    delete(id) {
+      baseFetch("/dashboard/folder/DELETE", { id })
+      setFolders([...folders.filter((e) => e.id != id)])
+    },
+  }
+
+  const noteActions = {
+    create(folderid, title, text) {
+      const copyFolders = folders
+      const i = copyFolders.findIndex((e) => e.id === folderid)
+
+      if (i == -1) return
+
+      const newNotes = copyFolders[i].notes
+      const promise = baseFetch("/dashboard/note/CREATE", {
+        folderid,
+        title,
+        text,
+      })
+
+      copyFolders[i].notes.push({ id: undefined, title, text })
+      setFolders(copyFolders)
+
+      promise
+        .then((res) => res.json())
+        .then((res) => {
+          newNotes.push(res)
+          copyFolders[i] = newNotes
+          setFolders(copyFolders)
+        })
+    },
+
+    update(id, fId, { folderid, title, text }) {
+      const copyFolders = folders
+      const folderIndex = copyFolders.findIndex((e) => e.id === fId)
+      const noteIndex = copyFolders[folderIndex].notes.findIndex(
+        (e) => e.id === id
+      )
+
+      if (folderIndex === -1 || noteIndex === -1) return
+
+      baseFetch("/dashboard/note/UPDATE", { id, folderid, title, text })
+
+      const copyNote = copyFolders[folderIndex].notes[noteIndex]
+
+      copyFolders[folderIndex].notes[noteIndex] = {
+        id,
+        folderid: folderid || fId,
+        title: title || copyNote.title,
+        text: text || copyNote.text,
+      }
+
+      setFolders(copyFolders)
+    },
+
+    delete(id, fId) {
+      const copyFolders = folders
+      const folderIndex = copyFolders.findIndex((e) => e.id === fId)
+      const noteIndex = copyFolders[folderIndex].notes.findIndex(
+        (e) => e.id === id
+      )
+
+      if (folderIndex === -1 || noteIndex === -1) return
+
+      copyFolders[folderIndex].notes.splice(noteIndex, 1)
+      baseFetch("/dashboard/note/DELETE", { id })
+    },
+  }
+
   return (
     <div className={style.container}>
       <header className={style.header}>
@@ -25,11 +145,17 @@ export function Logged() {
       </header>
       <main className={style.main}>
         <section className={style.menu}>
-          <div className={style.menu_header}>
-            <div className={style.menu_home}>
+          <header className={style.menu_header}>
+            <div
+              className={style.menu_home}
+              onClick={() => setActiveFolder(undefined)}
+            >
               <BiSolidHome />
               <div>HOME</div>
             </div>
+
+            {/* deixar de enfeite por enquanto*/}
+
             <Search
               listItens={{}}
               label={
@@ -39,31 +165,32 @@ export function Logged() {
               }
               placeholder="pesquisar"
             />
-          </div>
+          </header>
           <div className={style.menu_body}>
-            <h3>Suas pastas</h3>
-            <DropDown DropElement={<div>+</div>}>
-              <Modal
-                headerContent={[<div>salvar</div>]}
-                value={<div>Criar nova pasta</div>}
-              >
-                {/* ---------- create folder */}
-                <textarea className={style.create_nota_textarea} />
-              </Modal>
+            <div className={style.container_create_folder}>
+              <h3>Suas pastas</h3>
               <Modal
                 headerContent={[
-                  <div>salvar</div>,
-                  <input type="text" style={{ color: "white" }} />,
+                  <div className={style.create_folder}>salvar</div>,
                 ]}
-                btnClass={style.create_note}
-                value="Criar nova nota"
+                value={<div>+{/* crinar nova pasta */}</div>}
               >
-                {/* --------- create note */}
-                <textarea className={style.create_nota_textarea} />
+                <input className={style.input_create_folder} />
               </Modal>
-            </DropDown>
-            {/* repetir até não ter mais pastas */}
-            {/* ------------- read folder */}
+            </div>
+            {/* 
+            {folders &&
+              folders.map((folder) => (
+                <Folder
+                  name={folder.name}
+                  src={folder.src || undefined}
+                  alt="logo pasta"
+                  amount={folder.notes.length}
+                  onClick={() => console.log("folder")}
+                />
+              ))
+            } 
+            */}
 
             <Folder
               name="nome da pasta"
@@ -80,16 +207,16 @@ export function Logged() {
               onClick={() => console.log("folder")}
             />
           </div>
-          <div className={style.menu_footer}>
-            quer ver o codigo deste site? acesse meu <a href="#">github</a>
-          </div>
+          <footer className={style.menu_footer}>
+            <p>
+              quer ver o codigo deste site? acesse meu <a href="#">github</a>
+            </p>
+          </footer>
         </section>
-        {/* está section vai mudar a depender da pasta selecionada */}
-        {/* estrutura base */}
         <section>
           {/* repetir */}
           {/* ---------- read folders */}
-
+          {}
           <Folder
             name="nome da pasta"
             src="#"
@@ -100,10 +227,10 @@ export function Logged() {
             {/* deve ter wrap, ou display grad */}
             {/* esta div deve se repetir*/}
             {/* --------- read notes */}
-            <Note name="nome da anotação" id={2}>
+            <Note title="nome da anotação" id={2}>
               anotação qualquer
             </Note>
-            <Note name="nome da anotação" id={2}>
+            <Note title="nome da anotação" id={2}>
               anotação qualquer
             </Note>
           </Folder>
@@ -117,13 +244,12 @@ export function Logged() {
             {/* deve ter wrap, ou display grad */}
             {/* esta div deve se repetir*/}
             {/* --------- read notes */}
-            <Note name="nome da anotação" id={2}>
+            <Note title="nome da anotação" id={2}>
               anotação qualquer
             </Note>
           </Folder>
         </section>
 
-        {/* esse sera o home da pagina */}
         {/* <section className={style.content}>
           <div>
             <div>
@@ -131,10 +257,10 @@ export function Logged() {
               <div>quantidade de anotações</div>
             </div>
             <div>
-              <Note name="nome da anotação" id={2}>
+              <Note title="nome da anotação" id={2}>
                 anotação qualquer
               </Note>
-              <Note name="nome da anotação" id={2}>
+              <Note title="nome da anotação" id={2}>
                 anotação qualquer
               </Note>
             </div>
