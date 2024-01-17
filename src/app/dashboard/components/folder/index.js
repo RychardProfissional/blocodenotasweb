@@ -10,7 +10,7 @@ export function Folder({ src, alt, name, children, amount, ...rest }) {
       <ContentFolder $child={child}>
         {src ? <Img $child={child} src={src} alt={alt} /> : <DefaultImage />}
         <Name $child={child}>{name}</Name>
-        <Amount $child={child}>#{amount || 0}</Amount>
+        {!child && <Amount>#{amount || 0}</Amount>}
       </ContentFolder>
       {child && <ContentNotes>{children}</ContentNotes>}
     </Container>
@@ -45,6 +45,7 @@ const ContentFolder = styled.div`
 const ContentNotes = styled.div`
   display: flex;
   height: 210px;
+  overflow: auto;
 `
 
 const Name = styled.div`

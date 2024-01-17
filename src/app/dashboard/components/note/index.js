@@ -16,6 +16,7 @@ export function Note({ title, id, children, ...rest }) {
 
 const Container = styled.div`
   width: 230px;
+  min-width: 230px;
   overflow: hidden;
   padding: 10px;
   background-color: blue;

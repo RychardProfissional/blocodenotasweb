@@ -11,8 +11,8 @@ export const FoldersPres = ({ folders, ...rest }) => {
       key={folder.id}
       {...rest}
     >
-      {folder.notes?.map((note) => (
-        <Note key={note.id} title={note.title} id={note.id}>
+      {folder.notes?.map((note, i) => (
+        <Note key={note.id} title={note.title} id={i + 1}>
           {note.text}
         </Note>
       ))}
