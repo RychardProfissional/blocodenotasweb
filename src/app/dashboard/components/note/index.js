@@ -2,22 +2,49 @@
 
 import styled from "styled-components"
 
-export function Note({ name, id, children, ...rest }) {
+export function Note({ title, id, children, ...rest }) {
   return (
     <Container {...rest}>
       <Header>
-        <Name>{name}</Name>
-        <Id>{id}</Id>
+        <Name>{title}</Name>
+        <Id>#{id}</Id>
       </Header>
       <Excerpt>{children}</Excerpt>
     </Container>
   )
 }
 
-const Container = styled.div``
-const Header = styled.div``
-const Name = styled.div``
+const Container = styled.div`
+  width: 230px;
+  overflow: hidden;
+  padding: 10px;
+  background-color: blue;
+  margin: 10px;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.2s;
+
+  &:hover {
+    margin: 7px 10px;
+  }
+`
+
+const Header = styled.div`
+  display: flex;
+  padding: 0 5px 5px 5px;
+  background-color: red;
+  border-radius: 3px 3px 0 0;
+`
+
+const Name = styled.div`
+  flex-grow: 1;
+`
+
 const Id = styled.div``
-const Excerpt = styled.div``
+
+const Excerpt = styled.div`
+  text-align: justify;
+`
 
 export default Note

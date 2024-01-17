@@ -5,23 +5,3 @@
   overflow-x: hidden;
   overflow-y: auto;
 }
-
-.content::-webkit-scrollbar {
-  background-color: rgb(var(--color-white-4));
-  border-left: 1px solid rgba(0, 0, 0, 0.414);
-  width: 13px;
-}
-
-.content::-webkit-scrollbar-thumb {
-  background-image: linear-gradient(
-    to right,
-    transparent,
-    transparent 20%,
-    rgb(var(--color-white-5)) 20%,
-    rgb(var(--color-white-5)) 80%,
-    transparent 80%,
-    transparent 100%
-  );
-  margin: 5px;
-  border-radius: 10px;
-}

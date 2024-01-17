@@ -39,12 +39,25 @@ export const Folder = {
                 select: {
                   id: true,
                   name: true,
-                  notes: true,
+                  notes: {
+                    select: {
+                      id: true,
+                      title: true,
+                      text: true,
+                    },
+                  },
                 },
               },
             },
           })
-        )?.map((userToFolder) => userToFolder.folder)
+        )?.map(({ folder }) => ({
+          ...folder,
+          notes: folder.notes.map((note) => ({
+            id: note.id,
+            title: note.title,
+            text: note.text,
+          })),
+        }))
       }
 
       if (name) {

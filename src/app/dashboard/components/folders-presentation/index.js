@@ -1,17 +1,18 @@
 import Folder from "../folder"
 import Note from "../note"
 
-export const FoldersPres = (folders) => {
-  return folders.map((folder) => (
+export const FoldersPres = ({ folders, ...rest }) => {
+  return folders?.map((folder) => (
     <Folder
       name={folder.name}
       src={folder.src || undefined}
       alt="logo pasta"
-      amount={folder.notes.length}
-      onClick={() => console.log("folder")}
+      amount={folder.notes?.length}
+      key={folder.id}
+      {...rest}
     >
-      {folder.notes.map((note) => (
-        <Note title={note.title} id={note.id}>
+      {folder.notes?.map((note) => (
+        <Note key={note.id} title={note.title} id={note.id}>
           {note.text}
         </Note>
       ))}
@@ -19,16 +20,16 @@ export const FoldersPres = (folders) => {
   ))
 }
 
-export const FolderPres = (folder) => {
+export const FolderPres = ({ folder, ...rest }) => {
   return (
     <div>
       <div>
         <div>{folder.name}</div>
-        <div>{folder.notes.length}</div>
+        <div>{folder.notes?.length}</div>
       </div>
       <div>
-        {folder.notes.map((note) => (
-          <Note title={note.title} id={note.id}>
+        {folder.notes?.map((note) => (
+          <Note key={note.id} title={note.title} id={note.id}>
             {note.text}
           </Note>
         ))}
@@ -36,3 +37,16 @@ export const FolderPres = (folder) => {
     </div>
   )
 }
+
+export const MenuFolders = ({ folders, onClick, ...rest }) =>
+  folders?.map((folder, i) => (
+    <Folder
+      name={folder.name}
+      src={folder.src || undefined}
+      alt="logo pasta"
+      amount={folder.notes?.length}
+      key={`${folder.id}`}
+      onClick={() => onClick(folder.id, i)}
+      {...rest}
+    />
+  ))

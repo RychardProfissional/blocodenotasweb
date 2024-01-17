@@ -4,14 +4,99 @@ import DropDown from "@/app/components/functionalities/dropdown"
 import Modal from "@/app/components/functionalities/modal"
 import { BsPersonCircle } from "react-icons/bs"
 import { Search } from "../components/search"
-import { BiSolidHome, BiSearchAlt2 } from "react-icons/bi"
-import Folder from "../components/folder"
+import { BiSolidHome } from "react-icons/bi"
 import style from "./logged.module.css"
-import Note from "../components/note"
 import { useState } from "react"
+import { AiOutlineFolderAdd } from "react-icons/ai"
+import {
+  FolderPres,
+  FoldersPres,
+  MenuFolders,
+} from "../components/folders-presentation"
 
-export function Logged({ userid, username }) {
-  const [folders, setFolders] = useState([{}]) // retorno do folderAction.read
+export function Logged({ userid }) {
+  const [folders, setFolders] = useState([
+    {
+      id: 1,
+      name: "Folder 1",
+      notes: [
+        {
+          id: 1,
+          title: "Note 1",
+          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+        },
+        {
+          id: 2,
+          title: "Note 2",
+          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumPellentesque habitant...",
+        },
+      ],
+    },
+    {
+      id: 2,
+      name: "Folder 2",
+      notes: [
+        {
+          id: 3,
+          title: "Note 1",
+          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumSed do eiusmod...",
+        },
+        {
+          id: 4,
+          title: "Note 2",
+          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumUt enim ad minim...",
+        },
+      ],
+    },
+    {
+      id: 3,
+      name: "Folder 3",
+      notes: [
+        {
+          id: 5,
+          title: "Note 1",
+          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumDuis aute irure...",
+        },
+        {
+          id: 6,
+          title: "Note 2",
+          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumExcepteur sint...",
+        },
+      ],
+    },
+    {
+      id: 4,
+      name: "Folder 4",
+      notes: [
+        {
+          id: 7,
+          title: "Note 1",
+          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumCurabitur pretium...",
+        },
+        {
+          id: 8,
+          title: "Note 2",
+          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumSuspendisse non...",
+        },
+      ],
+    },
+    {
+      id: 5,
+      name: "Folder 5",
+      notes: [
+        {
+          id: 9,
+          title: "Note 1",
+          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumNunc sed augue...",
+        },
+        {
+          id: 10,
+          title: "Note 2",
+          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumPellentesque habitant...",
+        },
+      ],
+    },
+  ]) // retorno do folderAction.read
   const [activeFolder, setActiveFolder] = useState(undefined) // id do folder ativo, caso seja undefined é igual ao home
 
   const baseFetch = async (path, data) => {
@@ -23,6 +108,8 @@ export function Logged({ userid, username }) {
       body: JSON.stringify(data),
     })
   }
+
+  // considerar isolar actions em arquivo separado
 
   const folderActions = {
     create(name) {
@@ -130,6 +217,10 @@ export function Logged({ userid, username }) {
     },
   }
 
+  // useEffect(() => {
+  //   folderActions.read()
+  // }, [])
+
   return (
     <div className={style.container}>
       <header className={style.header}>
@@ -143,11 +234,12 @@ export function Logged({ userid, username }) {
           <div className={style.exit}>sair</div>
         </DropDown>
       </header>
+      {/* ------------------- */}
       <main className={style.main}>
         <section className={style.menu}>
           <header className={style.menu_header}>
             <div
-              className={style.menu_home}
+              className={`${style.menu_home} ${style.menu_header_item}`.trim()}
               onClick={() => setActiveFolder(undefined)}
             >
               <BiSolidHome />
@@ -155,14 +247,9 @@ export function Logged({ userid, username }) {
             </div>
 
             {/* deixar de enfeite por enquanto*/}
-
             <Search
               listItens={{}}
-              label={
-                <div>
-                  <BiSearchAlt2 />
-                </div>
-              }
+              className={style.menu_header_item}
               placeholder="pesquisar"
             />
           </header>
@@ -171,40 +258,18 @@ export function Logged({ userid, username }) {
               <h3>Suas pastas</h3>
               <Modal
                 headerContent={[
-                  <div className={style.create_folder}>salvar</div>,
+                  <div onClick={() => console.log("criando nova pasta")}>
+                    salvar
+                  </div>,
                 ]}
-                value={<div>+{/* crinar nova pasta */}</div>}
+                value={<AiOutlineFolderAdd className={style.create_folder} />}
               >
                 <input className={style.input_create_folder} />
               </Modal>
             </div>
-            {/* 
-            {folders &&
-              folders.map((folder) => (
-                <Folder
-                  name={folder.name}
-                  src={folder.src || undefined}
-                  alt="logo pasta"
-                  amount={folder.notes.length}
-                  onClick={() => console.log("folder")}
-                />
-              ))
-            } 
-            */}
-
-            <Folder
-              name="nome da pasta"
-              src="#"
-              alt="logo pasta"
-              amount={45}
-              onClick={() => console.log("folder")}
-            />
-            <Folder
-              name="nome da pasta"
-              src="#"
-              alt="logo pasta"
-              amount={45}
-              onClick={() => console.log("folder")}
+            <MenuFolders
+              folders={folders}
+              onClick={(key, i) => setActiveFolder(i)}
             />
           </div>
           <footer className={style.menu_footer}>
@@ -213,59 +278,13 @@ export function Logged({ userid, username }) {
             </p>
           </footer>
         </section>
-        <section>
-          {/* repetir */}
-          {/* ---------- read folders */}
-          {}
-          <Folder
-            name="nome da pasta"
-            src="#"
-            alt="logo pasta"
-            amount={45}
-            onClick={() => console.log("folder")}
-          >
-            {/* deve ter wrap, ou display grad */}
-            {/* esta div deve se repetir*/}
-            {/* --------- read notes */}
-            <Note title="nome da anotação" id={2}>
-              anotação qualquer
-            </Note>
-            <Note title="nome da anotação" id={2}>
-              anotação qualquer
-            </Note>
-          </Folder>
-          <Folder
-            name="nome da pasta"
-            src="#"
-            alt="logo pasta"
-            amount={45}
-            onClick={() => console.log("folder")}
-          >
-            {/* deve ter wrap, ou display grad */}
-            {/* esta div deve se repetir*/}
-            {/* --------- read notes */}
-            <Note title="nome da anotação" id={2}>
-              anotação qualquer
-            </Note>
-          </Folder>
+        <section className={style.viewFolder}>
+          {activeFolder >= 0 ? (
+            <FolderPres folder={folders[activeFolder]} />
+          ) : (
+            <FoldersPres folders={folders} />
+          )}
         </section>
-
-        {/* <section className={style.content}>
-          <div>
-            <div>
-              <span>Nome da pasta</span>
-              <div>quantidade de anotações</div>
-            </div>
-            <div>
-              <Note title="nome da anotação" id={2}>
-                anotação qualquer
-              </Note>
-              <Note title="nome da anotação" id={2}>
-                anotação qualquer
-              </Note>
-            </div>
-          </div>
-        </section> */}
       </main>
     </div>
   )
