@@ -91,7 +91,7 @@
   flex-grow: 2;
 }
 
-.container_create_folder {
+.menu_body_header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -99,16 +99,26 @@
   margin-bottom: 10px;
 }
 
-.create_folder {
+.create_folder_icon {
   height: 33px;
   width: 33px;
-  border-radius: 5px;
   padding: 3px;
   transition: 0.5s;
 }
 
-.create_folder:hover {
-  background-color: blue;
+.create_folder_icon:hover {
+  color: rgb(var(--color-secondary-5));
+}
+
+.drop_create_folder {
+  display: flex;
+  background-color: rgb(var(--color-black-3));
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.input_create_folder {
+  margin-left: 5px;
 }
 
 .menu_footer {
@@ -151,7 +161,7 @@
 .viewFolder {
   overflow: auto;
   max-height: 100%;
-  padding: 20px;
+  padding: 20px 5px 20px 20px;
   flex-grow: 1;
 }
 

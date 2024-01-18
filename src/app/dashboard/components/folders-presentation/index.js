@@ -1,14 +1,16 @@
 import Folder from "../folder"
+import MenuFolder from "../menu-folder"
 import Note from "../note"
 
-export const FoldersPres = ({ folders, ...rest }) => {
-  return folders?.map((folder) => (
+export const FoldersPres = ({ folders, onClick, ...rest }) => {
+  return folders?.map((folder, i) => (
     <Folder
       name={folder.name}
       src={folder.src || undefined}
       alt="logo pasta"
       amount={folder.notes?.length}
       key={folder.id}
+      onClick={() => onClick(i)}
       {...rest}
     >
       {folder.notes?.map((note, i) => (
@@ -40,13 +42,13 @@ export const FolderPres = ({ folder, ...rest }) => {
 
 export const MenuFolders = ({ folders, onClick, ...rest }) =>
   folders?.map((folder, i) => (
-    <Folder
+    <MenuFolder
       name={folder.name}
       src={folder.src || undefined}
       alt="logo pasta"
       amount={folder.notes?.length}
       key={`${folder.id}`}
-      onClick={() => onClick(folder.id, i)}
+      onClick={() => onClick(i)}
       {...rest}
     />
   ))

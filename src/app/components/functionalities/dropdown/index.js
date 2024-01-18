@@ -1,48 +1,60 @@
 "use client"
 
-import { useState } from "react"
-import style from "./dropdown.module.css"
+import { useEffect, useRef, useState } from "react"
+import styled from "styled-components"
 
-export function DropDown({
-  children = <div>acrescente algo aqui</div>,
-  DropElement = <div>-</div>,
-  eventDrop = "onClick",
-  className = "",
-  classMenu,
-}) {
+export function DropDown({ children = <></>, value = <></>, className = "" }) {
   const [visible, setVisible] = useState(false)
+  const detailsRef = useRef(null)
 
-  const events =
-    eventDrop === "onFocus"
-      ? {
-          onKeyDown: (e) => {
-            if (e.key === " ") {
-              e.preventDefault()
-              e.target.value += " "
-            }
-          },
-          onChange: () => setVisible(true),
-          onBlur: () => setVisible(false),
-        }
-      : { [eventDrop]: () => setVisible(!visible) }
+  useEffect(() => {
+    const handleClick = (event) => {
+      if (detailsRef.current && !detailsRef.current.contains(event.target)) {
+        setVisible(false)
+      }
+    }
+
+    document.addEventListener("click", handleClick)
+
+    return () => document.removeEventListener("click", handleClick)
+  }, [visible])
 
   return (
-    <details
-      open={visible}
-      className={`${className} ${style.drop_down}`.trim()}
-    >
-      <summary {...events} className={style.btn}>
-        {DropElement}
-      </summary>
-      <div className={style.container_menu}>
-        <menu className={`${classMenu} ${style.drop_content}`.trim()}>
+    <div className={className}>
+      <Details ref={detailsRef} open={visible}>
+        <Btn
+          onClick={(e) => {
+            e.preventDefault()
+            setVisible((v) => !v)
+          }}
+        >
+          {value}
+        </Btn>
+
+        <Drop>
           {Array.isArray(children)
             ? children.map((e, i) => <li key={`${e}${i}`}>{e}</li>)
             : children}
-        </menu>
-      </div>
-    </details>
+        </Drop>
+      </Details>
+    </div>
   )
 }
 
 export default DropDown
+
+const Details = styled.details`
+  position: relative;
+`
+
+const Btn = styled.summary`
+  cursor: pointer;
+`
+
+const Drop = styled.menu`
+  top: 100%;
+  right: 0;
+  position: absolute;
+
+  z-index: 100;
+`

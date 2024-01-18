@@ -7,6 +7,9 @@ export default function Page() {
   return (
     <div className={style.hero}>
       <header className={style.header}>
+        <p style={{ color: "red" }}>
+          ainda em desenvolvimento, funcionalidades incompletas
+        </p>
         <nav className={style.nav}>
           <a className={style.nav_item} href="#">
             Sobre

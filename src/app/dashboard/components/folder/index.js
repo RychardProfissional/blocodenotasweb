@@ -1,66 +1,61 @@
 "use client"
 
-import { styled, css } from "styled-components"
+import styled from "styled-components"
 import { AiFillFolder } from "react-icons/ai"
 
-export function Folder({ src, alt, name, children, amount, ...rest }) {
-  const child = !!children
+export function Folder({ src, alt, name, children, amount, onClick, ...rest }) {
   return (
-    <Container $child={child} {...rest}>
-      <ContentFolder $child={child}>
-        {src ? <Img $child={child} src={src} alt={alt} /> : <DefaultImage />}
-        <Name $child={child}>{name}</Name>
-        {!child && <Amount>#{amount || 0}</Amount>}
+    <Container {...rest}>
+      <ContentFolder onClick={onClick}>
+        {src ? <Img src={src} alt={alt} /> : <DefaultImage />}
+        <Name>{name}</Name>
       </ContentFolder>
-      {child && <ContentNotes>{children}</ContentNotes>}
+      <ContentNotes>{children}</ContentNotes>
     </Container>
   )
 }
 
 const Container = styled.div`
-  ${(props) => {
-    if (!props.$child)
-      return css`
-        color: rgb(var(--color-white-1));
-        background-color: rgb(var(--color-black-1));
-        cursor: pointer;
-        margin: 5px;
-        padding: 10px 0px;
-        border-radius: 5px;
-        transition: 0.5s;
-
-        &:hover {
-          background-color: rgb(var(--color-black-2));
-        }
-      `
-    else return css``
-  }}
+  margin: 5px 0;
+  background-color: rgb(127, 127, 127, 0.5);
+  border-radius: 5px;
+  padding-bottom: 2px;
 `
 
 const ContentFolder = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
+  background-color: gray;
+  padding: 10px;
+  border-radius: 5px 5px 0 0;
 `
 
 const ContentNotes = styled.div`
   display: flex;
   height: 210px;
   overflow: auto;
+  margin: 10px;
+
+  &::-webkit-scrollbar {
+    background-color: rgb(127, 127, 127, 0.5);
+    height: 10px;
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: red;
+    margin: 5px;
+    border-radius: 10px;
+  }
+
+  &:first-child {
+    margin-left: 0 !important;
+  }
 `
 
 const Name = styled.div`
   flex-grow: 1;
-`
-
-const Amount = styled.div`
-  ${(props) => {
-    if (!props.$child) {
-      return css`
-        color: rgb(var(--color-white-3));
-        padding: 0 7px;
-      `
-    } else return css``
-  }}
 `
 
 const Img = styled.img`

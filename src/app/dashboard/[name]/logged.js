@@ -246,7 +246,7 @@ export function Logged({ userid }) {
       <header className={style.header}>
         <div>dashboard</div>
         <DropDown
-          DropElement={<BsPersonCircle className={style.profile_icon} />}
+          value={<BsPersonCircle className={style.profile_icon} />}
           className={style.profile}
           classMenu={style.profile_drop}
         >
@@ -274,22 +274,26 @@ export function Logged({ userid }) {
             />
           </header>
           <div className={style.menu_body}>
-            <div className={style.container_create_folder}>
+            <div className={style.menu_body_header}>
               <h3>Suas pastas</h3>
-              <Modal
-                headerContent={[
-                  <div onClick={() => console.log("criando nova pasta")}>
-                    salvar
-                  </div>,
-                ]}
-                value={<AiOutlineFolderAdd className={style.create_folder} />}
+              <DropDown
+                value={
+                  <AiOutlineFolderAdd className={style.create_folder_icon} />
+                }
+                className={style.drop_down}
               >
-                <input className={style.input_create_folder} />
-              </Modal>
+                <div className={style.drop_create_folder}>
+                  <button className={style.create_folder}>salvar</button>
+                  <input
+                    className={style.input_create_folder}
+                    placeholder="seila"
+                  />
+                </div>
+              </DropDown>
             </div>
             <MenuFolders
               folders={folders}
-              onClick={(key, i) => setActiveFolder(i)}
+              onClick={(position) => setActiveFolder(position)}
             />
           </div>
           <footer className={style.menu_footer}>
@@ -302,7 +306,10 @@ export function Logged({ userid }) {
           {activeFolder >= 0 ? (
             <FolderPres folder={folders[activeFolder]} />
           ) : (
-            <FoldersPres folders={folders} />
+            <FoldersPres
+              folders={folders}
+              onClick={(position) => setActiveFolder(position)}
+            />
           )}
         </section>
       </main>
