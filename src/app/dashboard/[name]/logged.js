@@ -1,18 +1,14 @@
 "use client"
 
 import DropDown from "@/app/components/functionalities/dropdown"
-import Modal from "@/app/components/functionalities/modal"
 import { BsPersonCircle } from "react-icons/bs"
 import { Search } from "../components/search"
 import { BiSolidHome } from "react-icons/bi"
 import style from "./logged.module.css"
 import { useState } from "react"
-import { AiOutlineFolderAdd } from "react-icons/ai"
-import {
-  FolderPres,
-  FoldersPres,
-  MenuFolders,
-} from "../components/folders-presentation"
+import { FolderPres, FoldersPres } from "../components/folders-presentation"
+import { CreateFolder } from "../components/manipulate-database"
+import MenuFolder from "../components/menu-folder"
 
 export function Logged({ userid }) {
   const [folders, setFolders] = useState([
@@ -149,6 +145,13 @@ export function Logged({ userid }) {
             { id: res.id, name: res.name, notes: res.notes },
           ])
         )
+        .catch((e) => {
+          alert(
+            "[ERRO] não foi possivel criar nova pasta, por favor tente novamente mais tarde"
+          )
+          console.log(e)
+          setFolders([...newFolders])
+        })
     },
 
     read() {
@@ -276,29 +279,29 @@ export function Logged({ userid }) {
           <div className={style.menu_body}>
             <div className={style.menu_body_header}>
               <h3>Suas pastas</h3>
-              <DropDown
-                value={
-                  <AiOutlineFolderAdd className={style.create_folder_icon} />
-                }
-                className={style.drop_down}
-              >
-                <div className={style.drop_create_folder}>
-                  <button className={style.create_folder}>salvar</button>
-                  <input
-                    className={style.input_create_folder}
-                    placeholder="seila"
-                  />
-                </div>
-              </DropDown>
+              <CreateFolder onClick={folderActions.create} />
             </div>
-            <MenuFolders
-              folders={folders}
-              onClick={(position) => setActiveFolder(position)}
-            />
+            {folders?.map((folder, i) => (
+              <MenuFolder
+                name={folder.name}
+                src={folder.src || undefined}
+                alt="logo pasta"
+                amount={folder.notes?.length}
+                key={folder.id}
+                load={folder.id === undefined}
+                onClick={() => setActiveFolder(i)}
+              />
+            ))}
           </div>
           <footer className={style.menu_footer}>
             <p>
-              quer ver o codigo deste site? acesse meu <a href="#">github</a>
+              quer ver o codigo deste site? acesse meu{" "}
+              <a
+                target="_blank"
+                href="https://github.com/RychardProfissional/blocodenotasweb"
+              >
+                github
+              </a>
             </p>
           </footer>
         </section>

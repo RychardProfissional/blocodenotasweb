@@ -99,28 +99,6 @@
   margin-bottom: 10px;
 }
 
-.create_folder_icon {
-  height: 33px;
-  width: 33px;
-  padding: 3px;
-  transition: 0.5s;
-}
-
-.create_folder_icon:hover {
-  color: rgb(var(--color-secondary-5));
-}
-
-.drop_create_folder {
-  display: flex;
-  background-color: rgb(var(--color-black-3));
-  padding: 5px;
-  border-radius: 5px;
-}
-
-.input_create_folder {
-  margin-left: 5px;
-}
-
 .menu_footer {
   display: flex;
   align-items: center;

@@ -1,42 +1,36 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import styled from "styled-components"
+import OverLay from "@/app/components/style/overlay"
 
-export function DropDown({ children = <></>, value = <></>, className = "" }) {
+export function DropDown({ children, value, className, preExit = () => {} }) {
   const [visible, setVisible] = useState(false)
-  const detailsRef = useRef(null)
 
-  useEffect(() => {
-    const handleClick = (event) => {
-      if (detailsRef.current && !detailsRef.current.contains(event.target)) {
-        setVisible(false)
-      }
-    }
+  const handleClickBtn = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    visible && preExit()
+    setVisible(!visible)
+  }
 
-    document.addEventListener("click", handleClick)
-
-    return () => document.removeEventListener("click", handleClick)
-  }, [visible])
+  const exit = () => {
+    preExit()
+    setVisible(false)
+  }
 
   return (
     <div className={className}>
-      <Details ref={detailsRef} open={visible}>
-        <Btn
-          onClick={(e) => {
-            e.preventDefault()
-            setVisible((v) => !v)
-          }}
-        >
-          {value}
-        </Btn>
+      <Details open={visible}>
+        <Btn onClick={handleClickBtn}>{value}</Btn>
 
-        <Drop>
+        <DropDownContent>
           {Array.isArray(children)
             ? children.map((e, i) => <li key={`${e}${i}`}>{e}</li>)
             : children}
-        </Drop>
+        </DropDownContent>
       </Details>
+      {visible && <OverLay onClick={exit} />}
     </div>
   )
 }
@@ -45,13 +39,14 @@ export default DropDown
 
 const Details = styled.details`
   position: relative;
+  z-index: 100;
 `
 
 const Btn = styled.summary`
   cursor: pointer;
 `
 
-const Drop = styled.menu`
+const DropDownContent = styled.menu`
   top: 100%;
   right: 0;
   position: absolute;

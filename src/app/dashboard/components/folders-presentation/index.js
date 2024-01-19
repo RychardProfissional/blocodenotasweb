@@ -1,5 +1,4 @@
 import Folder from "../folder"
-import MenuFolder from "../menu-folder"
 import Note from "../note"
 
 export const FoldersPres = ({ folders, onClick, ...rest }) => {
@@ -39,16 +38,3 @@ export const FolderPres = ({ folder, ...rest }) => {
     </div>
   )
 }
-
-export const MenuFolders = ({ folders, onClick, ...rest }) =>
-  folders?.map((folder, i) => (
-    <MenuFolder
-      name={folder.name}
-      src={folder.src || undefined}
-      alt="logo pasta"
-      amount={folder.notes?.length}
-      key={`${folder.id}`}
-      onClick={() => onClick(i)}
-      {...rest}
-    />
-  ))
