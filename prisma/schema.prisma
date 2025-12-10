@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "./client"
 }
 
 datasource db {
@@ -20,7 +21,7 @@ model User {
 
   folders   UserToFolder[]
 
-  @@map("users")
+  @@map("noteweb_users")
 }
 
 model UserToFolder {
@@ -31,7 +32,7 @@ model UserToFolder {
   user     User   @relation(fields: [userid], references: [id], onDelete: Cascade)
 
   @@id([userid, folderid])
-  @@map("userstofolders")
+  @@map("noteweb_userstofolders")
 }
 
 model Folder {
@@ -43,7 +44,7 @@ model Folder {
   notes     Note[]
   users     UserToFolder[]
 
-  @@map("folders")
+  @@map("noteweb_folders")
 }
 
 model Note {
@@ -57,7 +58,5 @@ model Note {
   
   folder      Folder   @relation(fields: [folderid], references: [id], onDelete: Cascade)
 
-  @@map("notes")
+  @@map("noteweb_notes")
 }
-
-
