@@ -6,7 +6,6 @@ import { BsCheckCircleFill, BsCircleFill } from "react-icons/bs"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { signIn } from "next-auth/react"
-import DropDown from "@/app/components/functionalities/dropdown"
 
 export default function Register() {
   const router = useRouter()

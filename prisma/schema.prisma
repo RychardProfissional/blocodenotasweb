@@ -20,8 +20,6 @@ model User {
   active    Boolean        @default(true)
 
   folders   UserToFolder[]
-
-  @@map("noteweb_users")
 }
 
 model UserToFolder {
@@ -32,7 +30,6 @@ model UserToFolder {
   user     User   @relation(fields: [userid], references: [id], onDelete: Cascade)
 
   @@id([userid, folderid])
-  @@map("noteweb_userstofolders")
 }
 
 model Folder {
@@ -43,8 +40,6 @@ model Folder {
   name      String
   notes     Note[]
   users     UserToFolder[]
-
-  @@map("noteweb_folders")
 }
 
 model Note {
@@ -57,6 +52,4 @@ model Note {
   folderid    Int
   
   folder      Folder   @relation(fields: [folderid], references: [id], onDelete: Cascade)
-
-  @@map("noteweb_notes")
 }
