@@ -1,4 +1,3 @@
-import Input from "@/app/components/style/input"
 import styled from "styled-components"
 
 export const InputForm = ({
@@ -8,66 +7,74 @@ export const InputForm = ({
   label,
   ...rest
 }) => {
-  switch (type) {
-    case "submit":
-      return <BaseInput {...{ ...rest, type: type, className: className }} />
-    case "text":
-    case "password":
-      return (
-        <InputStyle
-          label={label}
-          {...rest}
-          style={{ padding: "25px 20px 15px 25px" }}
-        />
-      )
-    default:
-      return <input {...{ ...rest, type: type }} />
+  if (type === "submit") {
+    return <SubmitButton {...rest} type="submit" className={className} />
   }
+
+  return (
+    <InputWrapper className={className}>
+      <StyledInput {...rest} type={type} placeholder=" " />
+      <Label>{label}</Label>
+    </InputWrapper>
+  )
 }
 
-const InputStyle = styled(Input)`
-  background-color: #fafafa;
+const InputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+`
 
-  outline: 2px solid rgba(0, 0, 0, 0.142);
-  border-radius: 5px;
+const StyledInput = styled.input`
+  width: 100%;
+  padding: 1rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--color-text-main);
+  font-size: 1rem;
+  transition: all 0.2s ease;
 
-  min-width: 400px;
-  height: 57px;
-
-  font-weight: bold;
-  font-size: 0.8em;
-
-  &:hover {
-    background-color: #efefef;
-    outline-color: rgba(0, 0, 0, 0.396);
+  &:focus {
+    border-color: var(--color-accent);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 2px var(--color-accent-glow);
   }
 
-  &:focus-within {
-    background-color: #efefef;
-    outline-color: rgba(0, 0, 0, 0.86);
-  }
-
-  &:focus-within span,
-  & input:valid + span {
-    opacity: 100%;
+  &:not(:placeholder-shown) + label,
+  &:focus + label {
+    transform: translateY(-2.5rem) scale(0.85);
+    color: var(--color-accent);
+    left: 0;
   }
 `
 
-const BaseInput = styled.input`
-  background-color: #fafafa;
+const Label = styled.label`
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  color: var(--color-text-muted);
+  pointer-events: none;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+`
 
-  border-radius: 10px;
-  outline: 2px solid transparent;
-
-  padding: 20px 30px;
-
-  font-weight: bold;
-  font-size: 1.05em;
+const SubmitButton = styled.input`
+  width: 100%;
+  padding: 1rem;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 1rem;
 
   &:hover {
-    background-color: #efefef;
-    outline-color: rgba(0, 0, 0, 0.396);
+    background: var(--color-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   }
 `
 

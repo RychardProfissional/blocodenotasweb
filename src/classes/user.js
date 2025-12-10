@@ -1,15 +1,17 @@
 import prisma from "./prisma"
+import bcrypt from "bcryptjs"
 
 // este objeto é responsavel pelo gerencialmento da tabela users
 
 export const User = {
   async create(name, password, email = "") {
     try {
+      const hashedPassword = await bcrypt.hash(password, 10)
       return await prisma.user.create({
         data: {
           name: name,
           email: email,
-          password: password,
+          password: hashedPassword,
         },
       })
     } catch (err) {
@@ -18,14 +20,22 @@ export const User = {
     }
   },
 
-  async read({id, name, password}) {
+  async read({ id, name, password }) {
     try {
-      if (id){
-        return await prisma.user.findUnique({ where: {id: id} })
+      if (id) {
+        return await prisma.user.findUnique({ where: { id: id } })
       }
 
-      if (name && password){
-        return await prisma.user.findFirst({ where: {name: name, password: password} })
+      if (name && password) {
+        const user = await prisma.user.findUnique({
+          where: { name: name },
+        })
+
+        if (!user) return null
+
+        const isPasswordValid = await bcrypt.compare(password, user.password)
+
+        return isPasswordValid ? user : null
       }
     } catch (err) {
       return null
@@ -41,7 +51,7 @@ export const User = {
     }
   },
 
-  async folderIncrement(id, folderId){
+  async folderIncrement(id, folderId) {
     if (!id || !folderId) return null
 
     try {
@@ -49,7 +59,7 @@ export const User = {
         data: {
           userid: id,
           folderid: folderId,
-        }
+        },
       })
     } catch (err) {
       console.log(err)

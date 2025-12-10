@@ -1,33 +1,63 @@
 .form {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  overflow: visible;
+  gap: 1.25rem;
+  width: 100%;
 }
 
 .form h1 {
-  font-size: 3.5em;
-  margin-bottom: 40px;
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
-.input {
-  margin: 5px 0;
-}
-
-.password_menu {
-  background-color: rgb(var(--color-white-1));
-}
-
-.password_item {
+.input_group {
   display: flex;
-  padding: 5px 7px;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.password_item > div {
-  margin-left: 5px;
+.password_requirements {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  border: 1px solid var(--glass-border);
+}
+
+.requirement_item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.requirement_item:last-child {
+  margin-bottom: 0;
+}
+
+.requirement_item svg {
+  flex-shrink: 0;
 }
 
 .footer {
-  margin-top: 20px;
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.footer a {
+  color: var(--color-accent);
+  font-weight: 500;
+  margin: 0 0.5rem;
+}
+
+.footer a:hover {
+  text-decoration: underline;
 }

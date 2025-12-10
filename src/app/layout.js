@@ -9,11 +9,15 @@ export const metadata = {
   title: "Bloco de Notas Web",
 }
 
+import { Providers } from "./providers"
+
 export default function RootLayout({ children }) {
   return (
     <html lang="pt-br">
       <body className={inter.className}>
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        <StyledComponentsRegistry>
+          <Providers>{children}</Providers>
+        </StyledComponentsRegistry>
       </body>
     </html>
   )

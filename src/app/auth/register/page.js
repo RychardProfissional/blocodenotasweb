@@ -5,6 +5,7 @@ import style from "./register.module.css"
 import { BsCheckCircleFill, BsCircleFill } from "react-icons/bs"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { signIn } from "next-auth/react"
 import DropDown from "@/app/components/functionalities/dropdown"
 
 export default function Register() {
@@ -33,13 +34,11 @@ export default function Register() {
     e.preventDefault()
 
     if (nameChecked || emailCheked || passwordChecked || passwordTwoChecked) {
-      alert("por favor incira informações validas")
+      alert("Por favor, corrija os erros no formulário.")
       return
     }
 
-    let auth = false
-
-    await fetch(`http://localhost:3000/api/auth/register`, {
+    const res = await fetch(`/api/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -50,15 +49,25 @@ export default function Register() {
         email: email,
       }),
     })
-      .then(async (response) => {
-        auth = (await response.json()).auth
-        if (auth) router.push(`/dashboard/${name}`)
-        else alert(`[ERRO] Impossivel acessar a api no momento`)
+
+    const data = await res.json()
+
+    if (data.success) {
+      // Auto login
+      const loginRes = await signIn("credentials", {
+        name: name,
+        password: password,
+        redirect: false,
       })
-      .catch((e) => {
-        console.log(e)
-        alert("[ERRO] Impossivel acessar a api no momento")
-      })
+
+      if (loginRes?.error) {
+        router.push("/auth/login")
+      } else {
+        router.push(`/dashboard/${name}`)
+      }
+    } else {
+      alert("Erro ao cadastrar. Tente novamente.")
+    }
 
     setPassword("")
     setPasswordTwo("")
@@ -93,70 +102,78 @@ export default function Register() {
   }
 
   const ConfirmIcon = ({ confirm }) =>
-    confirm ? <BsCheckCircleFill fill="green" /> : <BsCircleFill fill="red" />
+    confirm ? (
+      <BsCheckCircleFill fill="var(--color-success)" />
+    ) : (
+      <BsCircleFill fill="var(--color-text-muted)" />
+    )
 
   return (
     <>
       <form onSubmit={(e) => registerUser(e)} className={style.form}>
-        <h1>Cadastro</h1>
+        <h1>Criar Conta</h1>
+
         <InputForm
-          className={style.input}
           value={name}
           onInput={(e) => handleName(e.target.value)}
           error={nameChecked}
-          label="Nome:"
+          label="Nome de Usuário"
+          placeholder=" "
         />
+
         <InputForm
-          className={style.input}
           value={email}
           onInput={(e) => handleEmail(e.target.value)}
           error={emailCheked}
-          label="Email:"
+          label="Email"
+          type="email"
+          placeholder=" "
         />
-        <DropDown
-          DropElement={
-            <InputForm
-              className={style.input}
-              value={password}
-              onInput={(e) => handlePassword(e.target.value)}
-              error={passwordChecked}
-              type="password"
-              label="Senha:"
-            />
-          }
-          classMenu={style.password_menu}
-          eventDrop="onFocus"
-          color="rgb(var(--color-white-1))"
-        >
-          <div className={style.password_item}>
-            <ConfirmIcon confirm={passwordChecks.lengthMin} />
-            <div>A senha tem que ter pelo menos 8 caracteres</div>
+
+        <div className={style.input_group}>
+          <InputForm
+            value={password}
+            onInput={(e) => handlePassword(e.target.value)}
+            error={passwordChecked}
+            type="password"
+            label="Senha"
+            placeholder=" "
+          />
+
+          <div className={style.password_requirements}>
+            <div className={style.requirement_item}>
+              <ConfirmIcon confirm={passwordChecks.lengthMin} />
+              <span>Mínimo de 8 caracteres</span>
+            </div>
+            <div className={style.requirement_item}>
+              <ConfirmIcon confirm={passwordChecks.specialChar} />
+              <span>Pelo menos 1 caractere especial</span>
+            </div>
+            <div className={style.requirement_item}>
+              <ConfirmIcon confirm={passwordChecks.uppercase} />
+              <span>Pelo menos 1 letra maiúscula</span>
+            </div>
+            <div className={style.requirement_item}>
+              <ConfirmIcon confirm={passwordChecks.lowercase} />
+              <span>Pelo menos 1 letra minúscula</span>
+            </div>
           </div>
-          <div className={style.password_item}>
-            <ConfirmIcon confirm={passwordChecks.specialChar} />
-            <div>A senha deve conter pelo menos 1 caracter especial</div>
-          </div>
-          <div className={style.password_item}>
-            <ConfirmIcon confirm={passwordChecks.uppercase} />
-            <div>A senha deve conter pelo menos 1 letra minuscula</div>
-          </div>
-          <div className={style.password_item}>
-            <ConfirmIcon confirm={passwordChecks.lowercase} />
-            <div>A senha deve conter pelo menos 1 letra maiuscula</div>
-          </div>
-        </DropDown>
+        </div>
+
         <InputForm
-          className={style.input}
           value={passwordTwo}
           onInput={(e) => handlePasswordTwo(e.target.value)}
           error={passwordTwoChecked}
           type="password"
-          label="Senha novamente:"
+          label="Confirmar Senha"
+          placeholder=" "
         />
-        <InputForm className={style.input} type="submit" value="cadastrar-se" />
+
+        <InputForm type="submit" value="Cadastrar" />
       </form>
+
       <footer className={style.footer}>
-        <a href="/auth/login">Logar</a> <span>|</span> <a href="#">Recuperar conta</a>
+        Já tem uma conta? <a href="/auth/login">Entrar</a>
       </footer>
     </>
   )

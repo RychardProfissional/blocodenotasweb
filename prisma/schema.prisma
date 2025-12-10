@@ -59,12 +59,4 @@ model Note {
   @@map("notes")
 }
 
-model RevokedToken {
-  id        Int      @id @default(autoincrement())
-  createdAT DateTime @default(now())
 
-  token     String   @unique
-  revokedAT Int
-
-  @@map("revokedtokens")
-}

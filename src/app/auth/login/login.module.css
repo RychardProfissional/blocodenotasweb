@@ -1,23 +1,32 @@
-.form{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    height: 370px;
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
 }
 
-.form h1{
-    font-size: 3.5em;
-    margin-bottom: 40px;
+.form h1 {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
-.footer{
-    padding-right: 25px;
+.footer {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
 }
 
-@media screen and (max-width: 600px){
-    .content{
-        width: 100%;
-        border-radius: 0;
-    }
+.footer a {
+  color: var(--color-accent);
+  font-weight: 500;
+  margin: 0 0.5rem;
+}
+
+.footer a:hover {
+  text-decoration: underline;
 }

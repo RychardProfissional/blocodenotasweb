@@ -1,320 +1,276 @@
 "use client"
 
-import DropDown from "@/app/components/functionalities/dropdown"
-import { BsPersonCircle } from "react-icons/bs"
-import { Search } from "../components/search"
-import { BiSolidHome } from "react-icons/bi"
+import { useState, useEffect, useMemo } from "react"
+import { signOut, useSession } from "next-auth/react"
+import {
+  BiHomeAlt,
+  BiFolder,
+  BiPlus,
+  BiSearch,
+  BiLogOut,
+  BiMenu,
+} from "react-icons/bi"
 import style from "./logged.module.css"
-import { useState } from "react"
 import { FolderPres, FoldersPres } from "../components/folders-presentation"
-import { CreateFolder } from "../components/manipulate-database"
-import MenuFolder from "../components/menu-folder"
+import toast from "react-hot-toast"
 
-export function Logged({ userid }) {
-  const [folders, setFolders] = useState([
-    {
-      id: 1,
-      name: "Folder 1",
-      notes: [
-        {
-          id: 1,
-          title: "Note 1",
-          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-        },
-        {
-          id: 2,
-          title: "Note 2",
-          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumPellentesque habitant...",
-        },
-        {
-          id: 3,
-          title: "Note 3",
-          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumPellentesque habitant...",
-        },
-        {
-          id: 4,
-          title: "Note 4",
-          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumPellentesque habitant...",
-        },
-        {
-          id: 5,
-          title: "Note 5",
-          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumPellentesque habitant...",
-        },
-        {
-          id: 6,
-          title: "Note 6",
-          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumPellentesque habitant...",
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Folder 2",
-      notes: [
-        {
-          id: 3,
-          title: "Note 1",
-          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumSed do eiusmod...",
-        },
-        {
-          id: 4,
-          title: "Note 2",
-          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumUt enim ad minim...",
-        },
-      ],
-    },
-    {
-      id: 3,
-      name: "Folder 3",
-      notes: [
-        {
-          id: 5,
-          title: "Note 1",
-          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumDuis aute irure...",
-        },
-        {
-          id: 6,
-          title: "Note 2",
-          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumExcepteur sint...",
-        },
-      ],
-    },
-    {
-      id: 4,
-      name: "Folder 4",
-      notes: [
-        {
-          id: 7,
-          title: "Note 1",
-          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumCurabitur pretium...",
-        },
-        {
-          id: 8,
-          title: "Note 2",
-          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumSuspendisse non...",
-        },
-      ],
-    },
-    {
-      id: 5,
-      name: "Folder 5",
-      notes: [
-        {
-          id: 9,
-          title: "Note 1",
-          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumNunc sed augue...",
-        },
-        {
-          id: 10,
-          title: "Note 2",
-          text: "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem IpsumPellentesque habitant...",
-        },
-      ],
-    },
-  ]) // retorno do folderAction.read
-  const [activeFolder, setActiveFolder] = useState(undefined) // id do folder ativo, caso seja undefined é igual ao home
+export function Logged() {
+  const { data: session } = useSession()
+  const [folders, setFolders] = useState([])
+  const [activeFolder, setActiveFolder] = useState(undefined)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("")
 
-  const baseFetch = async (path, data) => {
-    return await fetch(`${process.env.API_ROUTE}${path}`, {
-      method: "POST",
+  const baseFetch = async (path, method = "GET", data = null) => {
+    const options = {
+      method,
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
-    })
+    }
+    if (data) {
+      options.body = JSON.stringify(data)
+    }
+    return await fetch(`/api${path}`, options)
   }
-
-  // considerar isolar actions em arquivo separado
 
   const folderActions = {
     create(name) {
-      const newFolders = folders
-      const promise = baseFetch("/dashboard/folder/CREATE", { userid, name })
-
-      setFolders([
-        ...newFolders,
-        { id: undefined, name: name, notes: undefined },
-      ]) // fazer preview com base no id undefined
-
-      promise
+      baseFetch("/folders", "POST", { name })
         .then((res) => res.json())
-        .then((res) =>
-          setFolders([
-            ...newFolders,
-            { id: res.id, name: res.name, notes: res.notes },
-          ])
-        )
+        .then((newFolder) => {
+          if (newFolder.error) return toast.error(newFolder.error)
+          setFolders([...folders, { ...newFolder, notes: [] }])
+          toast.success("Pasta criada com sucesso!")
+        })
         .catch((e) => {
-          alert(
-            "[ERRO] não foi possivel criar nova pasta, por favor tente novamente mais tarde"
-          )
-          console.log(e)
-          setFolders([...newFolders])
+          console.error(e)
+          toast.error("Erro ao criar pasta")
         })
     },
 
     read() {
-      baseFetch("/dashboard/folder/READ", { userid })
+      baseFetch("/folders")
         .then((res) => res.json())
-        .then((res) => setFolders(res))
+        .then((res) => {
+          if (Array.isArray(res)) setFolders(res)
+        })
+        .catch((e) => console.error(e))
     },
 
     update(id, name) {
-      const newFolders = folders
-      const i = newFolders.findIndex((e) => e.id === id)
-
-      if (i == -1) return
-
-      newFolders[i].name = name
-      baseFetch("/dashboard/folder/UPDATE", { id, name })
-      setFolders(newFolders)
+      baseFetch(`/folders/${id}`, "PATCH", { name })
+        .then((res) => res.json())
+        .then((updatedFolder) => {
+          if (updatedFolder.error) return toast.error(updatedFolder.error)
+          setFolders(
+            folders.map((f) =>
+              f.id === id ? { ...f, name: updatedFolder.name } : f
+            )
+          )
+          toast.success("Pasta atualizada!")
+        })
+        .catch(() => toast.error("Erro ao atualizar pasta"))
     },
 
     delete(id) {
-      baseFetch("/dashboard/folder/DELETE", { id })
-      setFolders([...folders.filter((e) => e.id != id)])
+      if (!confirm("Tem certeza que deseja excluir esta pasta?")) return
+
+      baseFetch(`/folders/${id}`, "DELETE")
+        .then(() => {
+          setFolders(folders.filter((f) => f.id !== id))
+          if (activeFolder !== undefined && folders[activeFolder]?.id === id) {
+            setActiveFolder(undefined)
+          }
+          toast.success("Pasta excluída!")
+        })
+        .catch(() => toast.error("Erro ao excluir pasta"))
     },
   }
 
   const noteActions = {
     create(folderid, title, text) {
-      const copyFolders = folders
-      const i = copyFolders.findIndex((e) => e.id === folderid)
-
-      if (i == -1) return
-
-      const newNotes = copyFolders[i].notes
-      const promise = baseFetch("/dashboard/note/CREATE", {
-        folderid,
-        title,
-        text,
-      })
-
-      copyFolders[i].notes.push({ id: undefined, title, text })
-      setFolders(copyFolders)
-
-      promise
+      baseFetch("/notes", "POST", { folderid, title, text })
         .then((res) => res.json())
-        .then((res) => {
-          newNotes.push(res)
-          copyFolders[i] = newNotes
-          setFolders(copyFolders)
+        .then((newNote) => {
+          if (newNote.error) return toast.error(newNote.error)
+          const newFolders = [...folders]
+          const folderIndex = newFolders.findIndex((f) => f.id === folderid)
+          if (folderIndex !== -1) {
+            if (!newFolders[folderIndex].notes)
+              newFolders[folderIndex].notes = []
+            newFolders[folderIndex].notes.push(newNote)
+            setFolders(newFolders)
+            toast.success("Nota criada!")
+          }
         })
+        .catch(() => toast.error("Erro ao criar nota"))
     },
 
-    update(id, fId, { folderid, title, text }) {
-      const copyFolders = folders
-      const folderIndex = copyFolders.findIndex((e) => e.id === fId)
-      const noteIndex = copyFolders[folderIndex].notes.findIndex(
-        (e) => e.id === id
-      )
+    update(id, folderid, title, text) {
+      baseFetch(`/notes/${id}`, "PATCH", { folderid, title, text })
+        .then((res) => res.json())
+        .then((updatedNote) => {
+          if (updatedNote.error) return toast.error(updatedNote.error)
 
-      if (folderIndex === -1 || noteIndex === -1) return
-
-      baseFetch("/dashboard/note/UPDATE", { id, folderid, title, text })
-
-      const copyNote = copyFolders[folderIndex].notes[noteIndex]
-
-      copyFolders[folderIndex].notes[noteIndex] = {
-        id,
-        folderid: folderid || fId,
-        title: title || copyNote.title,
-        text: text || copyNote.text,
-      }
-
-      setFolders(copyFolders)
+          // Refresh folders to get updated data
+          folderActions.read()
+          toast.success("Nota atualizada!")
+        })
+        .catch(() => toast.error("Erro ao atualizar nota"))
     },
 
-    delete(id, fId) {
-      const copyFolders = folders
-      const folderIndex = copyFolders.findIndex((e) => e.id === fId)
-      const noteIndex = copyFolders[folderIndex].notes.findIndex(
-        (e) => e.id === id
-      )
+    delete(id, folderid) {
+      if (!confirm("Tem certeza que deseja excluir esta nota?")) return
 
-      if (folderIndex === -1 || noteIndex === -1) return
-
-      copyFolders[folderIndex].notes.splice(noteIndex, 1)
-      baseFetch("/dashboard/note/DELETE", { id })
+      baseFetch(`/notes/${id}`, "DELETE")
+        .then(() => {
+          const newFolders = [...folders]
+          const folderIndex = newFolders.findIndex((f) => f.id === folderid)
+          if (folderIndex !== -1) {
+            newFolders[folderIndex].notes = newFolders[
+              folderIndex
+            ].notes.filter((n) => n.id !== id)
+            setFolders(newFolders)
+            toast.success("Nota excluída!")
+          }
+        })
+        .catch(() => toast.error("Erro ao excluir nota"))
     },
   }
 
-  // useEffect(() => {
-  //   folderActions.read()
-  // }, [])
+  useEffect(() => {
+    folderActions.read()
+  }, [])
+
+  const filteredFolders = useMemo(() => {
+    if (!searchTerm) return folders
+    const lowerTerm = searchTerm.toLowerCase()
+    return folders
+      .map((folder) => ({
+        ...folder,
+        notes: folder.notes?.filter(
+          (note) =>
+            note.title.toLowerCase().includes(lowerTerm) ||
+            note.text.toLowerCase().includes(lowerTerm)
+        ),
+      }))
+      .filter(
+        (folder) =>
+          folder.name.toLowerCase().includes(lowerTerm) ||
+          folder.notes?.length > 0
+      )
+  }, [folders, searchTerm])
+
+  const currentFolder =
+    activeFolder !== undefined ? folders[activeFolder] : null
 
   return (
     <div className={style.container}>
-      <header className={style.header}>
-        <div>dashboard</div>
-        <DropDown
-          value={<BsPersonCircle className={style.profile_icon} />}
-          className={style.profile}
-          classMenu={style.profile_drop}
-        >
-          <div className={style.profile_drop_item}>teste</div>
-          <div className={style.exit}>sair</div>
-        </DropDown>
-      </header>
-      {/* ------------------- */}
-      <main className={style.main}>
-        <section className={style.menu}>
-          <header className={style.menu_header}>
-            <div
-              className={`${style.menu_home} ${style.menu_header_item}`.trim()}
-              onClick={() => setActiveFolder(undefined)}
-            >
-              <BiSolidHome />
-              <div>HOME</div>
+      <aside className={`${style.sidebar} ${sidebarOpen ? style.open : ""}`}>
+        <div className={style.sidebar_header}>
+          <div className={style.logo}>
+            Bloco<span>Web</span>
+          </div>
+        </div>
+
+        <div className={style.nav_list}>
+          <div
+            className={`${style.nav_item} ${
+              activeFolder === undefined ? style.active : ""
+            }`}
+            onClick={() => setActiveFolder(undefined)}
+          >
+            <BiHomeAlt size={20} />
+            <span>Início</span>
+          </div>
+
+          <div className={style.folders_section}>
+            <div className={style.section_title}>
+              <span>Pastas</span>
+              <button
+                className={style.add_folder_btn}
+                onClick={() => {
+                  const name = prompt("Nome da nova pasta:")
+                  if (name) folderActions.create(name)
+                }}
+              >
+                <BiPlus size={18} />
+              </button>
             </div>
 
-            {/* deixar de enfeite por enquanto*/}
-            <Search
-              listItens={{}}
-              className={style.menu_header_item}
-              placeholder="pesquisar"
-            />
-          </header>
-          <div className={style.menu_body}>
-            <div className={style.menu_body_header}>
-              <h3>Suas pastas</h3>
-              <CreateFolder onClick={folderActions.create} />
-            </div>
-            {folders?.map((folder, i) => (
-              <MenuFolder
-                name={folder.name}
-                src={folder.src || undefined}
-                alt="logo pasta"
-                amount={folder.notes?.length}
+            {folders.map((folder, i) => (
+              <div
                 key={folder.id}
-                load={folder.id === undefined}
+                className={`${style.nav_item} ${
+                  activeFolder === i ? style.active : ""
+                }`}
                 onClick={() => setActiveFolder(i)}
-              />
+              >
+                <BiFolder size={20} />
+                <span>{folder.name}</span>
+              </div>
             ))}
           </div>
-          <footer className={style.menu_footer}>
-            <p>
-              quer ver o codigo deste site? acesse meu{" "}
-              <a
-                target="_blank"
-                href="https://github.com/RychardProfissional/blocodenotasweb"
-              >
-                github
-              </a>
-            </p>
-          </footer>
-        </section>
-        <section className={style.viewFolder}>
-          {activeFolder >= 0 ? (
-            <FolderPres folder={folders[activeFolder]} />
+        </div>
+
+        <div className={style.user_profile}>
+          <div className={style.user_info}>
+            <div className={style.avatar}>
+              {session?.user?.name?.[0]?.toUpperCase() || "U"}
+            </div>
+            <span className={style.username}>{session?.user?.name}</span>
+          </div>
+          <button className={style.logout_btn} onClick={() => signOut()}>
+            <BiLogOut size={20} />
+          </button>
+        </div>
+      </aside>
+
+      <main className={style.main_content}>
+        <header className={style.top_bar}>
+          <button
+            className={style.menu_btn}
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+          >
+            <BiMenu size={24} />
+          </button>
+
+          <div className={style.search_bar}>
+            <BiSearch size={20} />
+            <input
+              type="text"
+              placeholder="Pesquisar notas ou pastas..."
+              className={style.search_input}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </header>
+
+        <div className={style.content_area}>
+          {currentFolder ? (
+            <FolderPres
+              folder={currentFolder}
+              createNote={noteActions.create}
+              updateNote={noteActions.update}
+              deleteNote={noteActions.delete}
+              updateFolder={folderActions.update}
+              deleteFolder={folderActions.delete}
+            />
           ) : (
             <FoldersPres
-              folders={folders}
-              onClick={(position) => setActiveFolder(position)}
+              folders={filteredFolders}
+              onClick={(position) => {
+                // Find original index
+                const originalIndex = folders.findIndex(
+                  (f) => f.id === filteredFolders[position].id
+                )
+                setActiveFolder(originalIndex)
+              }}
             />
           )}
-        </section>
+        </div>
       </main>
     </div>
   )
