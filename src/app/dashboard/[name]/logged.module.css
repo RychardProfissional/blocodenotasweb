@@ -12,14 +12,16 @@
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease;
-  z-index: 20;
+  z-index: 1000;
 }
 
 .sidebar_header {
-  padding: 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
+  height: 74px;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   align-items: center;
+  padding: 0 20px;
   gap: 0.75rem;
 }
 
@@ -53,6 +55,15 @@
   transition: all 0.2s ease;
   cursor: pointer;
   font-weight: 500;
+  position: relative;
+  height: 40px;
+  flex: 1;
+}
+
+.nav_start {
+  position: unset;
+  height: unset;
+  flex: unset;
 }
 
 .nav_item:hover,
@@ -64,6 +75,29 @@
 .nav_item.active {
   background-color: rgba(56, 189, 248, 0.1);
   color: var(--color-accent);
+}
+
+.delete_folder_btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  margin-left: auto;
+}
+
+.nav_item:hover .delete_folder_btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete_folder_btn:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--color-danger);
 }
 
 .folders_section {
@@ -148,23 +182,28 @@
 }
 
 .top_bar {
-  height: 64px;
+  height: 74px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: end;
   padding: 0 2rem;
   background-color: var(--color-bg-dark);
 }
 
+.menu_btn {
+  display: none;
+}
+
 .search_bar {
   display: flex;
+  flex-grow: 1;
+  max-width: 300;
   align-items: center;
   gap: 0.5rem;
   background-color: var(--color-bg-input);
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  width: 300px;
   color: var(--color-text-muted);
 }
 
@@ -194,5 +233,24 @@
 
   .sidebar.open {
     transform: translateX(0);
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+
+  .top_bar {
+    justify-content: space-between;
+  }
+
+  .menu_btn {
+    margin-right: 20px;
+    display: block;
   }
 }

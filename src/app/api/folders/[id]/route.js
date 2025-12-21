@@ -10,7 +10,7 @@ export async function PATCH(req, { params }) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const { id } = params
+  const { id } = await params
   const { name } = await req.json()
   const userId = parseInt(session.user.id)
 
@@ -54,7 +54,7 @@ export async function DELETE(req, { params }) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const { id } = params
+  const { id } = await params
   const userId = parseInt(session.user.id)
 
   try {

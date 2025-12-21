@@ -9,10 +9,13 @@ import {
   BiSearch,
   BiLogOut,
   BiMenu,
+  BiXCircle,
+  BiTrash,
 } from "react-icons/bi"
 import style from "./logged.module.css"
 import { FolderPres, FoldersPres } from "../components/folders-presentation"
 import toast from "react-hot-toast"
+import { useRouter } from "next/navigation"
 
 export function Logged() {
   const { data: session } = useSession()
@@ -20,6 +23,7 @@ export function Logged() {
   const [activeFolder, setActiveFolder] = useState(undefined)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
+  const route = useRouter();
 
   const baseFetch = async (path, method = "GET", data = null) => {
     const options = {
@@ -139,10 +143,6 @@ export function Logged() {
     },
   }
 
-  useEffect(() => {
-    folderActions.read()
-  }, [])
-
   const filteredFolders = useMemo(() => {
     if (!searchTerm) return folders
     const lowerTerm = searchTerm.toLowerCase()
@@ -165,21 +165,59 @@ export function Logged() {
   const currentFolder =
     activeFolder !== undefined ? folders[activeFolder] : null
 
+  const currentFolderFiltered = useMemo(() => {
+    if (!currentFolder) return null
+    if (!searchTerm) return currentFolder
+
+    const lowerTerm = searchTerm.toLowerCase()
+    return {
+      ...currentFolder,
+      notes: currentFolder.notes?.filter(
+        (note) =>
+          note.title.toLowerCase().includes(lowerTerm) ||
+          note.text.toLowerCase().includes(lowerTerm)
+      ),
+    }
+  }, [currentFolder, searchTerm])
+
+  const handleSignOut = () => {
+    signOut()
+    route.replace('/')
+  }
+
+  useEffect(() => {
+    folderActions.read()
+  }, [])
+
   return (
     <div className={style.container}>
+      {sidebarOpen && (
+        <div
+          className={style.overlay}
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
       <aside className={`${style.sidebar} ${sidebarOpen ? style.open : ""}`}>
         <div className={style.sidebar_header}>
           <div className={style.logo}>
             Bloco<span>Web</span>
           </div>
+          {sidebarOpen && (
+            <div onClick={() => setSidebarOpen(false)}>
+              <BiXCircle/>
+            </div>
+          )}
         </div>
 
         <div className={style.nav_list}>
           <div
-            className={`${style.nav_item} ${
+            className={`${style.nav_item} ${style.nav_start} ${
               activeFolder === undefined ? style.active : ""
             }`}
-            onClick={() => setActiveFolder(undefined)}
+            onClick={() => {
+              setActiveFolder(undefined)
+              setSidebarOpen(false)
+            }}
           >
             <BiHomeAlt size={20} />
             <span>Início</span>
@@ -205,10 +243,23 @@ export function Logged() {
                 className={`${style.nav_item} ${
                   activeFolder === i ? style.active : ""
                 }`}
-                onClick={() => setActiveFolder(i)}
+                onClick={() => {
+                  setActiveFolder(i)
+                  setSidebarOpen(false)
+                }}
               >
                 <BiFolder size={20} />
                 <span>{folder.name}</span>
+                <button
+                  className={style.delete_folder_btn}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    folderActions.delete(folder.id)
+                  }}
+                  title="Excluir pasta"
+                >
+                  <BiTrash size={16} />
+                </button>
               </div>
             ))}
           </div>
@@ -221,7 +272,7 @@ export function Logged() {
             </div>
             <span className={style.username}>{session?.user?.name}</span>
           </div>
-          <button className={style.logout_btn} onClick={() => signOut()}>
+          <button className={style.logout_btn} onClick={handleSignOut}>
             <BiLogOut size={20} />
           </button>
         </div>
@@ -240,7 +291,7 @@ export function Logged() {
             <BiSearch size={20} />
             <input
               type="text"
-              placeholder="Pesquisar notas ou pastas..."
+              placeholder="Pesquisar..."
               className={style.search_input}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -251,7 +302,7 @@ export function Logged() {
         <div className={style.content_area}>
           {currentFolder ? (
             <FolderPres
-              folder={currentFolder}
+              folder={currentFolderFiltered}
               createNote={noteActions.create}
               updateNote={noteActions.update}
               deleteNote={noteActions.delete}
