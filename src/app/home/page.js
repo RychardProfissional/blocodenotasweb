@@ -10,18 +10,6 @@ export default function Page() {
         <div className={style.logo}>
           Bloco<span>Web</span>
         </div>
-        <nav className={style.nav}>
-          <a className={style.nav_item} href="#">
-            Sobre
-          </a>
-          <a
-            className={style.nav_item}
-            href="https://github.com/RychardProfissional/blocodenotasweb"
-            target="_blank"
-          >
-            Github
-          </a>
-        </nav>
         <a
           className={`${style.nav_item} ${style.cta_button}`}
           href="/auth/login"
